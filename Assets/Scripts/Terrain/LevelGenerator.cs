@@ -20,11 +20,11 @@ public class LevelGenerator
 
                 if (perlinNoise(perlinX,perlinY,0.4f) > -0.2f)
                 {
-                    Tile tile = new Tile(Tile.Type.STONE);
 
-                    tile.spawn(new Vector3(i * 2, 0, j * 2));
 
-                    level.tiles [i, j] = tile;
+                    GameObject go = (GameObject)GameObject.Instantiate(Tile.allTileModels[Tile.Type.STONE], new Vector3(i * 2, 0, j * 2), Quaternion.Euler(new Vector3(0, 0, 0)));
+
+                    level.tiles[i, j] = go.GetComponent<Tile>();
                 }
             }
         }

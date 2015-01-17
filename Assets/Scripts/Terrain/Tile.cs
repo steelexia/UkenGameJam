@@ -1,8 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
 
-public class Tile {
-    public GameObject gameObject;
+public class Tile : MonoBehaviour{
+   
 
     public static Dictionary<Type,GameObject> allTileModels; 
 
@@ -23,7 +23,7 @@ public class Tile {
     {
         GameObject model = allTileModels [type];
         model = (GameObject)GameObject.Instantiate (model, position, Quaternion.Euler(new Vector3(0,0,0)));
-        gameObject = model;
+        //this.gameObject = model;
     }
 
     public static void loadResources()
