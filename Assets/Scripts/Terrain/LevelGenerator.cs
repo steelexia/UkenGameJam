@@ -25,12 +25,10 @@ public class LevelGenerator
 
                 if (perlinNoise(perlinX,perlinY,0.4f) > -0.2f)
                 {
-
-
                     GameObject block = (GameObject)GameObject.Instantiate(Block.allBlockModels[Block.Type.STONE], new Vector3(i * 2, 0, j * 2), Quaternion.Euler(new Vector3(0, 0, 0)));
 
                     level.block[i, j] = block.GetComponent<Block>();
-                    level.block[i, j].Init(Block.Type.STONE);
+                    level.block[i, j].Init(Block.Type.STONE, level, i, j);
                 }
             }
         }
@@ -44,24 +42,8 @@ public class LevelGenerator
         {
             for (int j = 0; j < height; j++)
             {
-
-                if( level.block[i,j] !=null  && level.block[i,j].alive == true)
-                {
-                    if (i > 0 && j < height - 1 && j>0)
-                    {
-
-
-                        if (level.block[i, j - 1] == null && level.block[i - 1, j] == null && level.block[ i - 1, j-1] == null)
-                        {
-                            GameObject go = level.block[i,j].gameObject.transform.FindChild("block_stone_south_west").gameObject;
-                            go.SetActive(false);
-                        }
-                     
-
-                    }
-                }
+                level.removeEdges(i, j);
             }
-
         }
     }
     /**
