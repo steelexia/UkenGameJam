@@ -5,7 +5,7 @@ public class Level{
 
     public int width, height;
     public Tile[,] tiles;
-
+    public Block[,] block;
     public List<Mob> allMobs;
 
     public Level(Player player)

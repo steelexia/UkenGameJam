@@ -7,6 +7,7 @@ public class Block : MonoBehaviour {
     public static Dictionary<Type, GameObject> allBlockModels;
 
     public float health;
+    public bool alive;
     public enum Type{
         STONE,
     }
@@ -16,8 +17,13 @@ public class Block : MonoBehaviour {
     public Block (Type type)
     {
         this.type = type;
+        this.alive = false;
     }
-
+   public void Init(Type type)
+    {
+        this.type = type;
+        this.alive = true;
+    }
     void Awake()
     {
         health = BaseStats.BASEBLOCKHP;
