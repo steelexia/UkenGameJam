@@ -26,7 +26,7 @@ public class PlayerController : MonoBehaviour
 
         Quaternion newRotation;
 
-        float movementSpeed = 5f; //TODO
+        float movementSpeed = 3f; //TODO
 
         if (verticalAxis != 0 || horizontalAxis != 0)
         {
@@ -34,6 +34,8 @@ public class PlayerController : MonoBehaviour
             
             Vector3 targetDirection = new Vector3(-horizontalAxis + transformPos2d.x, 0, verticalAxis + transformPos2d.z);
             newRotation = Quaternion.LookRotation(targetDirection - transformPos2d, Vector3.up);
+        
+            animation.Play("human_run");
         } 
         //no movement, mouse controls rotation
         else
@@ -52,6 +54,8 @@ public class PlayerController : MonoBehaviour
                 newRotation = transform.rotation;
             
             transformPos2d.y = 0;
+
+            animation.Play("human_idle");
         }
 
         transform.rotation = Quaternion.Slerp(transform.rotation, newRotation, Time.deltaTime * 10);
