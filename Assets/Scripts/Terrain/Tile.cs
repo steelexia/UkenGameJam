@@ -22,10 +22,20 @@ public class Tile : MonoBehaviour{
     public void spawn(Vector3 position)
     {
         GameObject model = allTileModels [type];
+<<<<<<< HEAD
         model = (GameObject)GameObject.Instantiate(model, position, Quaternion.Euler(new Vector3(0, 0, 0)));
         gameObject = model;
         model = (GameObject)GameObject.Instantiate (model, position, Quaternion.Euler(new Vector3(0,0,0)));
         //this.gameObject = model;
+=======
+
+        model = (GameObject)GameObject.Instantiate(model, position, Quaternion.Euler(new Vector3(0, 0, 0)));
+        //gameObject = model;
+
+        model = (GameObject)GameObject.Instantiate (model, position, Quaternion.Euler(new Vector3(0,0,0)));
+        //this.gameObject = model;
+
+>>>>>>> e6da3cb630723babf8d60dab9c8607f10c1a2dd1
     }
 
     public static void loadResources()
