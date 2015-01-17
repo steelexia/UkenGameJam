@@ -49,7 +49,8 @@ public class Level{
 
     public void removeEdges(int i, int j)
     {
-        if(block[i,j] !=null)
+        if(i >=0 && i < width && j >=0 && j < height 
+           && block[i,j] != null)
         {
             for (int k = 0; k < 4; k++) {
                 bool west = k == 0 || k == 3;
