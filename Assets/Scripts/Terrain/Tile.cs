@@ -22,7 +22,7 @@ public class Tile {
     public void spawn(Vector3 position)
     {
         GameObject model = allTileModels [type];
-        model = (GameObject)GameObject.Instantiate (model, position, Quaternion.Euler(new Vector3(0,0,0)));
+        model = (GameObject)GameObject.Instantiate(model, position, Quaternion.Euler(new Vector3(0, 0, 0)));
         gameObject = model;
     }
 

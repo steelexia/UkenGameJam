@@ -5,7 +5,7 @@ using System;
 public class LevelGenerator
 {
     //public static int currentSeed = UnityEngine.Random.Range(0,100000);
-    public static int currentSeed = 123;
+    public static int currentSeed = 123                                                                                                                                                                                                                                                                                                          ;
 
     public static void generate(Level level, int width, int height)
     {
