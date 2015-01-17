@@ -32,11 +32,14 @@ public class Block : MonoBehaviour {
     {
         health -= damage;
 
+        //TODO: need to find all childs and do this, but also gotta change renderer back after a delay
+        /*
            Color c =  gameObject.renderer.material.color;
           c.b  = Mathf.Max(0,health/BaseStats.BASEBLOCKHP);
           c.g = Mathf.Max(0, health / BaseStats.BASEBLOCKHP);
          gameObject.renderer.material.color= c;
 
+        */
         
         if(health<=0)
         {

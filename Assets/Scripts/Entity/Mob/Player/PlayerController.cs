@@ -56,7 +56,7 @@ public class PlayerController : MonoBehaviour
             transformPos2d.y = 0;
 
 
-            controller.animation.Play("human_idle");
+            animation.Play("human_idle");
         }
 
         transform.rotation = Quaternion.Slerp(transform.rotation, newRotation, Time.deltaTime * 10);
