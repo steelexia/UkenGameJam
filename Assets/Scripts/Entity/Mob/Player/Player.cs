@@ -16,6 +16,7 @@ public class Player : Mob {
         if (Input.GetMouseButtonDown(0))
         {
             BreakBlock();
+            animation.Play("human_attack");
         }
 	
 	}
