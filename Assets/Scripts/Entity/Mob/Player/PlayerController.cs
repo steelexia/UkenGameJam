@@ -57,7 +57,7 @@ public class PlayerController : MonoBehaviour
         transform.rotation = Quaternion.Slerp(transform.rotation, newRotation, Time.deltaTime * 10);
         controller.SimpleMove(Vector3.forward * verticalAxis * movementSpeed + Vector3.left * horizontalAxis * movementSpeed);
 
-        cameraController.update();
+       // cameraController.update();
     }
 
     public void locatePosition(bool setPosition)
