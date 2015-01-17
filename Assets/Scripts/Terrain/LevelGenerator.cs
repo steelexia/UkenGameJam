@@ -10,6 +10,7 @@ public class LevelGenerator
     public static void generate(Level level, int width, int height)
     {
         level.tiles = new Tile[width, height];
+        level.block = new Block[width, height];
         for (int i = 0; i < width; i++)
         {
             for (int j = 0; j < height; j++)
@@ -28,12 +29,41 @@ public class LevelGenerator
 
                     GameObject block = (GameObject)GameObject.Instantiate(Block.allBlockModels[Block.Type.STONE], new Vector3(i * 2, 0, j * 2), Quaternion.Euler(new Vector3(0, 0, 0)));
 
-                    level.tiles[i, j] = block.GetComponent<Tile>();
+                    level.block[i, j] = block.GetComponent<Block>();
+                    level.block[i, j].Init(Block.Type.STONE);
                 }
             }
         }
+        OnGenerateMap(level,width,height);
     }
 
+
+    public static void OnGenerateMap(Level level, int width, int height)
+    {
+        for (int i = 0; i < width; i++)
+        {
+            for (int j = 0; j < height; j++)
+            {
+
+                if( level.block[i,j] !=null  && level.block[i,j].alive == true)
+                {
+                    if (i > 0 && j < height - 1 && j>0)
+                    {
+
+
+                        if (level.block[i, j - 1] == null && level.block[i - 1, j] == null && level.block[ i - 1, j-1] == null)
+                        {
+                            GameObject go = level.block[i,j].gameObject.transform.FindChild("block_stone_south_west").gameObject;
+                            go.SetActive(false);
+                        }
+                     
+
+                    }
+                }
+            }
+
+        }
+    }
     /**
      * Returns a pseudo random number between -1.0 to 1.0
      * Has 6 levels of octaves which generate different numbers
