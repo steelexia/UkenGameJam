@@ -11,7 +11,7 @@ public class GameMain : MonoBehaviour {
         Tile.loadResources();
         Block.loadResources();
         level = new Level(player);
-	}  
+	}
 	
 	// Update is called once per frame
 	void Update () {
