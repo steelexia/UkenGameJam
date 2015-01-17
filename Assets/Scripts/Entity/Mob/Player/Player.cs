@@ -1,11 +1,11 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class NewBehaviourScript : MonoBehaviour {
+public class Player : Mob {
 
 	// Use this for initialization
-	void Start () {
-	
+	new void Start () {
+        base.Start();
 	}
 	
 	// Update is called once per frame
