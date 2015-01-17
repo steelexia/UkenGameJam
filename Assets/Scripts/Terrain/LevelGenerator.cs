@@ -18,13 +18,17 @@ public class LevelGenerator
                 perlinX = i * 0.3f;
                 perlinY = j * 0.3f;
 
+                GameObject go = (GameObject)GameObject.Instantiate(Tile.allTileModels[Tile.Type.STONE], new Vector3(i * 2, 0, j * 2), Quaternion.Euler(new Vector3(0, 0, 0)));
+
+                level.tiles[i, j] = go.GetComponent<Tile>();
+
                 if (perlinNoise(perlinX,perlinY,0.4f) > -0.2f)
                 {
 
 
-                    GameObject go = (GameObject)GameObject.Instantiate(Tile.allTileModels[Tile.Type.STONE], new Vector3(i * 2, 0, j * 2), Quaternion.Euler(new Vector3(0, 0, 0)));
+                    GameObject block = (GameObject)GameObject.Instantiate(Block.allBlockModels[Block.Type.STONE], new Vector3(i * 2, 0, j * 2), Quaternion.Euler(new Vector3(0, 0, 0)));
 
-                    level.tiles[i, j] = go.GetComponent<Tile>();
+                    level.tiles[i, j] = block.GetComponent<Tile>();
                 }
             }
         }

@@ -17,18 +17,20 @@ public class CameraController : MonoBehaviour {
 	}
 	
     /* NOTE: not the monodevelop update */
-    public void update () {
+    void LateUpdate()
+    {
         Vector3 targetPosition = target.transform.position + PLAYER_OFFSET;
-        
+
         offset = new Vector3(0, 30, 6);
-        
+
         Vector3 lerpTarget = targetPosition;
         camera.transform.position = targetPosition + offset;
-        
+
         lerpTarget = Vector3.Lerp(camera.transform.position, lerpTarget + offset, Time.deltaTime * 0.1f);
-        
+
         camera.transform.position = lerpTarget;
-        
+
         camera.transform.rotation = Quaternion.Lerp(camera.transform.rotation, Quaternion.LookRotation(targetPosition - camera.transform.position), Time.deltaTime * 1000f);
     }
+   
 }

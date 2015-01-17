@@ -9,7 +9,7 @@ public class GameMain : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
         Tile.loadResources();
-
+        Block.loadResources();
         level = new Level(player);
 	}
 	
