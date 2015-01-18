@@ -4,8 +4,8 @@
 <author>VoxelShop User</author>
 <authoring_tool>VoxelShop V1.4.21</authoring_tool>
 </contributor>
-<created>2015-01-17T19:12:57</created>
-<modified>2015-01-17T19:12:57</modified>
+<created>2015-01-17T19:03:13</created>
+<modified>2015-01-17T19:03:13</modified>
 <unit meter="1" name="meter"/>
 <up_axis>Z_UP</up_axis>
 </asset>
@@ -62,9 +62,9 @@
 </technique_common>
 </source>
 <source id="Plane-tex-mesh-uvs">
-<float_array count="12" id="Plane-tex-mesh-uvs-array">0.33380473 0.33356905 0.66643095 0.6661953 0.66643095 0.33356905 0.33356905 0.33380473 0.33356905 0.66643095 0.6661953 0.66643095</float_array>
+<float_array count="22" id="Plane-tex-mesh-uvs-array">0.12505892 0.043509007 0.1666372 0.08689503 0.1666372 0.043509007 0.12502946 0.043539748 0.12502946 0.086925775 0.16660774 0.086925775 0.95830387 0.912982 0.95830387 0.043509007 0.04169613 0.08701801 0.04169613 0.956491 0.87494105 0.956491</float_array>
 <technique_common>
-<accessor count="6" source="#Plane-tex-mesh-uvs-array" stride="2">
+<accessor count="11" source="#Plane-tex-mesh-uvs-array" stride="2">
 <param name="S" type="float"/>
 <param name="T" type="float"/>
 </accessor>
@@ -77,7 +77,7 @@
 <input offset="0" semantic="VERTEX" source="#Plane-tex-mesh-vertices"/>
 <input offset="1" semantic="TEXCOORD" set="0" source="#Plane-tex-mesh-uvs"/>
 <vcount>3 3 3 3 3 3 3 3 3 3 3 3</vcount>
-<p>0 0 1 1 2 2 0 3 3 4 1 5 5 1 4 0 6 2 7 4 4 3 5 5 1 1 6 0 2 2 5 4 6 3 1 5 4 0 3 1 0 2 4 3 7 4 3 5 6 0 0 1 2 2 6 3 4 4 0 5 3 1 5 0 1 2 7 4 5 3 3 5</p>
+<p>0 0 1 1 2 2 0 3 3 4 1 5 5 1 4 0 6 2 7 4 4 3 5 5 1 1 6 0 2 2 5 4 6 3 1 5 4 0 3 6 0 7 4 8 7 9 3 10 6 0 0 1 2 2 6 3 4 4 0 5 3 1 5 0 1 2 7 4 5 3 3 5</p>
 </polylist>
 </mesh>
 </geometry>

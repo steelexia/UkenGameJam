@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 9d767d3ec534374479463653bda69705
+guid: b9e2a003dda8f68499735f3d58125fc6
 ModelImporter:
   serializedVersion: 16
   fileIDToRecycleName:
@@ -7,7 +7,7 @@ ModelImporter:
     400000: //RootNode
     2300000: //RootNode
     3300000: //RootNode
-    4300000: tile_stone
+    4300000: mob_flores_hand_right
     9500000: //RootNode
   materials:
     importMaterials: 1

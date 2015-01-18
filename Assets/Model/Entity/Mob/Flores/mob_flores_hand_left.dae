@@ -4,27 +4,27 @@
 <author>VoxelShop User</author>
 <authoring_tool>VoxelShop V1.4.21</authoring_tool>
 </contributor>
-<created>2015-01-17T19:12:57</created>
-<modified>2015-01-17T19:12:57</modified>
+<created>2015-01-17T18:03:13</created>
+<modified>2015-01-17T18:03:13</modified>
 <unit meter="1" name="meter"/>
 <up_axis>Z_UP</up_axis>
 </asset>
 <library_images>
-<image id="tile_stone_texture0-image" name="tile_stone_texture0-image">
-<init_from>tile_stone_texture0.png</init_from>
+<image id="mob_flores_hand_left_texture0-image" name="mob_flores_hand_left_texture0-image">
+<init_from>mob_flores_hand_left_texture0.png</init_from>
 </image>
 </library_images>
 <library_effects>
 <effect id="lambert0-fx">
 <profile_COMMON>
-<newparam sid="tile_stone_texture0-surface">
+<newparam sid="mob_flores_hand_left_texture0-surface">
 <surface type="2D">
-<init_from>tile_stone_texture0-image</init_from>
+<init_from>mob_flores_hand_left_texture0-image</init_from>
 </surface>
 </newparam>
-<newparam sid="tile_stone_texture0-sampler">
+<newparam sid="mob_flores_hand_left_texture0-sampler">
 <sampler2D>
-<source>tile_stone_texture0-surface</source>
+<source>mob_flores_hand_left_texture0-surface</source>
 </sampler2D>
 </newparam>
 <technique sid="common">
@@ -36,7 +36,7 @@
 <color>0 0 0 1</color>
 </ambient>
 <diffuse>
-<texture texcoord="TEX0" texture="tile_stone_texture0-sampler"/>
+<texture texcoord="TEX0" texture="mob_flores_hand_left_texture0-sampler"/>
 </diffuse>
 </lambert>
 </technique>
@@ -52,7 +52,7 @@
 <geometry id="Plane-tex-mesh" name="Plane-tex">
 <mesh>
 <source id="Plane-tex-mesh-positions">
-<float_array count="24" id="Plane-tex-mesh-positions-array">-39 -39 39 -39 1 -1 -39 -39 -1 -39 1 39 1 -39 39 1 1 -1 1 -39 -1 1 1 39</float_array>
+<float_array count="24" id="Plane-tex-mesh-positions-array">-13 -13 11 -13 -7 7 -13 -13 7 -13 -7 11 -9 -13 11 -9 -7 7 -9 -13 7 -9 -7 11</float_array>
 <technique_common>
 <accessor count="8" source="#Plane-tex-mesh-positions-array" stride="3">
 <param name="X" type="float"/>
@@ -84,7 +84,7 @@
 </library_geometries>
 <library_visual_scenes>
 <visual_scene id="Scene" name="Scene">
-<node id="tile_stone" name="tile_stone" type="NODE">
+<node id="mob_flores_hand_left" name="mob_flores_hand_left" type="NODE">
 <translate sid="location">0 0 0</translate>
 <rotate sid="rotationZ">0 0 1 0</rotate>
 <rotate sid="rotationY">0 1 0 0</rotate>

@@ -55,8 +55,8 @@ public class PlayerController : MonoBehaviour
             
             transformPos2d.y = 0;
 
-
-            animation.CrossFade("human_idle");
+            if (!animation.isPlaying || animation.IsPlaying("human_run"))
+                animation.CrossFade("human_idle");
         }
 
         transform.rotation = Quaternion.Slerp(transform.rotation, newRotation, Time.deltaTime * 10);

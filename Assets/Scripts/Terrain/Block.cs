@@ -8,6 +8,8 @@ public class Block : MonoBehaviour {
 
     public float health;
     public bool alive;
+    public int i, j;
+    public Level level;
     public enum Type{
         STONE,
     }
@@ -19,10 +21,13 @@ public class Block : MonoBehaviour {
         this.type = type;
         this.alive = false;
     }
-   public void Init(Type type)
+   public void Init(Type type, Level level, int i, int j)
     {
         this.type = type;
         this.alive = true;
+        this.level = level;
+        this.i = i;
+        this.j = j;
     }
     void Awake()
     {
@@ -48,6 +53,7 @@ public class Block : MonoBehaviour {
     }
     public void Destroy()
     {
+        level.destroyBlock(i, j);
         Destroy(this.gameObject);
     }
     public static void loadResources()
