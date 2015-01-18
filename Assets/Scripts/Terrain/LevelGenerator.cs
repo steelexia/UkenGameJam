@@ -23,15 +23,25 @@ public class LevelGenerator
 
                 level.tiles[i, j] = go.GetComponent<Tile>();
 
-                if (perlinNoise(perlinX,perlinY,0.4f) > -0.2f)
+                Block.Type blockType;
+                
+                if (i == 0 || i == width-1 || j == 0 || j == height-1)
+                    blockType = Block.Type.BORDER;
+                else
+                    blockType = Block.Type.STONE;
+                
+                if (blockType == Block.Type.BORDER || perlinNoise(perlinX,perlinY,0.4f) > -0.2f)
                 {
-                    GameObject block = (GameObject)GameObject.Instantiate(Block.allBlockModels[Block.Type.STONE], new Vector3(i * 2, 0, j * 2), Quaternion.Euler(new Vector3(0, 0, 0)));
+
+                        
+                    GameObject block = (GameObject)GameObject.Instantiate(Block.allBlockModels[blockType], new Vector3(i * 2, 0, j * 2), Quaternion.Euler(new Vector3(0, 0, 0)));
+                    
                     Bounds b = block.collider.bounds;
                     //Pathfinding.Console.Write ("// Placing Object\n");
                     GraphUpdateObject guo = new GraphUpdateObject(b);
                     AstarPath.active.UpdateGraphs(guo);
                     level.block[i, j] = block.GetComponent<Block>();
-                    level.block[i, j].Init(Block.Type.STONE, level, i, j);
+                    level.block[i, j].Init(blockType, level, i, j);
                 }
             }
         }
