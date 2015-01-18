@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System;
-
+using Pathfinding;
 public class LevelGenerator
 {
     //public static int currentSeed = UnityEngine.Random.Range(0,100000);
@@ -26,7 +26,10 @@ public class LevelGenerator
                 if (perlinNoise(perlinX,perlinY,0.4f) > -0.2f)
                 {
                     GameObject block = (GameObject)GameObject.Instantiate(Block.allBlockModels[Block.Type.STONE], new Vector3(i * 2, 0, j * 2), Quaternion.Euler(new Vector3(0, 0, 0)));
-
+                    Bounds b = block.collider.bounds;
+                    //Pathfinding.Console.Write ("// Placing Object\n");
+                    GraphUpdateObject guo = new GraphUpdateObject(b);
+                    AstarPath.active.UpdateGraphs(guo);
                     level.block[i, j] = block.GetComponent<Block>();
                     level.block[i, j].Init(Block.Type.STONE, level, i, j);
                 }
