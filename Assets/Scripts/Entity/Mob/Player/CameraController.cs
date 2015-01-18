@@ -21,7 +21,7 @@ public class CameraController : MonoBehaviour {
     {
         Vector3 targetPosition = target.transform.position + PLAYER_OFFSET;
 
-        offset = new Vector3(0, 15, 5);
+        offset = new Vector3(0, 13, 8);
 
         Vector3 lerpTarget = targetPosition;
         camera.transform.position = targetPosition + offset;
