@@ -37,7 +37,7 @@ public class NPC : AIPath
         Seek,
         Battle
     }
-    public Animation anim;
+    
     public AIState State = AIState.Wander;
     /** Minimum velocity for moving */
     public float sleepVelocity = 0.4F;
@@ -222,24 +222,15 @@ public class NPC : AIPath
         if(isAttacking == false)
         {
             isAttacking = true;
-            StartCoroutine(Attack());
+            StartCoroutine(CoAttack());
           
         }
     }
 
-    IEnumerator Attack()
+    IEnumerator CoAttack()
     {
-        RaycastHit hit;
-        anim.Play("human_attack");
-        audioManager.PlayAudio(0);
-        if (Physics.Raycast(this.transform.position + new Vector3(0, 0, 0), transform.forward, out hit, 1.5f))
-        {
-            Player player;
-            if ((player = hit.collider.gameObject.GetComponent<Player>()) != null)
-            {
-                player.Damage(atkDamage);
-            }
-        }
+        Attack("Player");
+       
 
         yield return new WaitForSeconds(attackRate);
         isAttacking = false;
