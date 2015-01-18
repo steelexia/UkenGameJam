@@ -35,7 +35,8 @@ public class NPC : AIPath
     {
         Wander,
         Seek,
-        Battle
+        Battle,
+        MoveAway
     }
     
     public AIState State = AIState.Wander;
@@ -104,6 +105,7 @@ public class NPC : AIPath
             case AIState.Wander: Wander(); break;
             case AIState.Seek: Seek(); break;
             case AIState.Battle: Battle(); break;
+            case AIState.MoveAway: MoveAway(); break;
         }
         //Get velocity in world-space
         Vector3 velocity;
@@ -213,12 +215,36 @@ public class NPC : AIPath
                 }
     }
 
+    void MoveAway()
+    {
+        StartCoroutine(CoMoveAway());
+    }
 
+    IEnumerator CoMoveAway()
+    {
+
+        target.position = player.position + new Vector3(2, 0, 2);
+
+        yield return new WaitForSeconds(attackRate+0.3f);
+        State = AIState.Seek;
+    }
+    void OnCollisionEnter(Collision collision)
+    {
+     
+        if(State == AIState.Seek)
+
+            if (collision.gameObject.layer == 10)
+            {
+                State = AIState.MoveAway;
+            }
+        
+
+    }
     IEnumerator BreakBlock()
     {
         if (isBlockingBreaking == false)
         {
-           
+
             RaycastHit hit;
             if (Physics.Raycast(this.transform.position + new Vector3(0, 0, 0), transform.forward, out hit, 3.5f))
             {
@@ -232,9 +258,13 @@ public class NPC : AIPath
                     yield return new WaitForSeconds(attackRate);
                     isBlockingBreaking = false;
                 }
+                else if (hit.collider.gameObject.layer == 10)
+                {
+                    State = AIState.MoveAway;
 
                 }
             }
+        }
           
     }
     void Battle()

@@ -19,6 +19,7 @@ public class Mob : Entity {
     Vector3 velocity = Vector3.zero;
     public AudioManager audioManager;
     public bool isAlive = true;
+    public bool isPlayer = false;
     
 	// Use this for initialization
      protected virtual void Start () {
@@ -67,8 +68,11 @@ public class Mob : Entity {
     }
     public void Damage(float damage)
     {
-        if (this == null)
+       
+        if (this == null || isAlive == false)
             return;
+
+
          hp -= damage;
 
 
@@ -85,10 +89,15 @@ public class Mob : Entity {
         isAlive = false;
         	Bounds b = gameObject.collider.bounds;
 			Destroy (gameObject.collider);
-        GraphUpdateObject guo = new GraphUpdateObject(b);
-		AstarPath.active.UpdateGraphs (guo,0.0f);
-        AstarPath.active.FlushGraphUpdates();
-          anim.Play("human_death");
-        
+            GraphUpdateObject guo = new GraphUpdateObject(b);
+		    AstarPath.active.UpdateGraphs (guo,0.0f);
+            AstarPath.active.FlushGraphUpdates();
+            if (isPlayer != true)
+            {
+                anim.Play("human_death");
+                CharacterController cc = GetComponent(typeof(CharacterController)) as CharacterController;
+                cc.enabled = false;
+                this.enabled = false;
+            }
     }
 }

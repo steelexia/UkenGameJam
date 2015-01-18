@@ -23,7 +23,10 @@ public class LevelGenerator
                 perlinY = j * 0.3f;
 
                 GameObject go = (GameObject)GameObject.Instantiate(Tile.allTileModels[Tile.Type.STONE], new Vector3(i * 2, 0, j * 2), Quaternion.Euler(new Vector3(0, 0, 0)));
-
+                Bounds btile = go.collider.bounds;
+                //Pathfinding.Console.Write ("// Placing Object\n");
+                GraphUpdateObject guo = new GraphUpdateObject(btile);
+                AstarPath.active.UpdateGraphs(guo);
                 level.tiles[i, j] = go.GetComponent<Tile>();
 
                 Block.Type blockType;
@@ -39,8 +42,8 @@ public class LevelGenerator
                     
                     Bounds b = block.collider.bounds;
                     //Pathfinding.Console.Write ("// Placing Object\n");
-                    GraphUpdateObject guo = new GraphUpdateObject(b);
-                    AstarPath.active.UpdateGraphs(guo);
+                    GraphUpdateObject guo1 = new GraphUpdateObject(b);
+                    AstarPath.active.UpdateGraphs(guo1);
                     level.block[i, j] = block.GetComponent<Block>();
                     level.block[i, j].Init(blockType, level, i, j);
                 }
