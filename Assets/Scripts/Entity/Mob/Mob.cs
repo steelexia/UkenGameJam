@@ -37,6 +37,7 @@ public class Mob : Entity {
 		velocity = vel;
 	}
 
+
     public void Attack(string layer)
     {
         RaycastHit hit;
@@ -52,6 +53,16 @@ public class Mob : Entity {
                 player.Damage(atkDamage);
             }
         }
+    }
+
+    public void Heal(float hp)
+    {
+       GameObject newEffect = (GameObject)Instantiate(Resources.Load("heailngRitual"),transform.position, Quaternion.identity);
+
+       
+        this.hp+= hp;
+        this.hp = Mathf.Clamp(hp, 0, BaseStats.BASEPLAYERHP);
+        
     }
     public void Damage(float damage)
     {

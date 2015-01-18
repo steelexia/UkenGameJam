@@ -28,6 +28,10 @@ public class Player : Mob {
             BreakBlock();
 
         }
+        if(Input.GetKeyDown(KeyCode.H))
+        {
+            Heal(50f);
+        }
         progressBar.value = hp / BaseStats.BASEPLAYERHP;
 	}
 

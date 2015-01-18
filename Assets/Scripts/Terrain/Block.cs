@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
-
+using Pathfinding;
 public class Block : MonoBehaviour {
 
     public static Dictionary<Type, GameObject> allBlockModels;
@@ -10,6 +10,7 @@ public class Block : MonoBehaviour {
     public bool alive;
     public int i, j;
     public Level level;
+    public GameObject effect;
     public enum Type{
         STONE,
         BORDER,
@@ -58,7 +59,8 @@ public class Block : MonoBehaviour {
     public void Destroy()
     {
         level.destroyBlock(i, j);
-
+        //GameObject newEffect = (GameObject)Instantiate(effect, transform.position, Quaternion.identity);
+        GameObject newEffect = (GameObject)Instantiate(Resources.Load("DestroyBlock"), transform.position + new Vector3(0,2,0), Quaternion.identity); 
         //if (UnityEngine.Random.Range(0, 1f) < 0.05f)
         {
             Vector3 randomOffset = new Vector3(UnityEngine.Random.Range(-0.5f, 0.5f), 0, UnityEngine.Random.Range(-0.5f, 0.5f));
@@ -68,7 +70,16 @@ public class Block : MonoBehaviour {
             item.Drop();
         }
 
-        Destroy(this.gameObject);
+        Bounds b = gameObject.collider.bounds;
+	
+			
+			//Pathfinding.Console.Write ("// Placing Object\n");
+			
+				GraphUpdateObject guo = new GraphUpdateObject(b);
+				AstarPath.active.UpdateGraphs (guo,0.0f);
+                AstarPath.active.FlushGraphUpdates();
+
+        Destroy(this.gameObject,0.1f);
 
         //TODO drop item
     }
