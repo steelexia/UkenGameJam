@@ -5,6 +5,7 @@ using Pathfinding;
 public class Block : MonoBehaviour {
 
     public static Dictionary<Type, GameObject> allBlockModels;
+    public static GameObject blockDestroy;
 
     public float health;
     public bool alive;
@@ -60,7 +61,8 @@ public class Block : MonoBehaviour {
     {
         level.destroyBlock(i, j);
         //GameObject newEffect = (GameObject)Instantiate(effect, transform.position, Quaternion.identity);
-        GameObject newEffect = (GameObject)Instantiate(Resources.Load("DestroyBlock"), transform.position + new Vector3(0,2,0), Quaternion.identity); 
+        GameObject particle = (GameObject)Instantiate(blockDestroy, transform.position + new Vector3(0,4,0), Quaternion.identity); 
+
         //if (UnityEngine.Random.Range(0, 1f) < 0.05f)
         {
             Vector3 randomOffset = new Vector3(UnityEngine.Random.Range(-0.5f, 0.5f), 0, UnityEngine.Random.Range(-0.5f, 0.5f));
@@ -94,5 +96,7 @@ public class Block : MonoBehaviour {
 
         model = (GameObject)Resources.Load("block_border", typeof(GameObject));
         allBlockModels.Add(Type.BORDER, model);
+
+        blockDestroy = (GameObject)Resources.Load("block_break", typeof(GameObject));
     }
 }
