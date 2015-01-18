@@ -48,6 +48,7 @@ public class Mob : Entity {
             Mob player;
             if ((player = hit.collider.gameObject.GetComponent<Mob>()) != null)
             {
+                audioManager.PlayAudio(1);
                 player.Damage(atkDamage);
             }
         }
