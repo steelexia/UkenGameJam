@@ -5,7 +5,8 @@ using Pathfinding;
 public class LevelGenerator
 {
     //public static int currentSeed = UnityEngine.Random.Range(0,100000);
-    public static int currentSeed = 123                                                                                                                                                                                                                                                                                                          ;
+    public static int defaultSeed = 123;
+    public static int currentSeed = defaultSeed;
 
     public static void generate(Level level, int width, int height)
     {
@@ -19,21 +20,38 @@ public class LevelGenerator
             for (int j = 0; j < height; j++)
             {
                 float perlinX, perlinY;
-                perlinX = i * 0.3f;
-                perlinY = j * 0.3f;
+                perlinX = i * 0.5f;
+                perlinY = j * 0.5f;
 
                 GameObject go = (GameObject)GameObject.Instantiate(Tile.allTileModels[Tile.Type.STONE], new Vector3(i * 2, 0, j * 2), Quaternion.Euler(new Vector3(0, 0, 0)));
 
                 level.tiles[i, j] = go.GetComponent<Tile>();
 
                 Block.Type blockType;
+
+                //GENERATE END GAME
+                if (j == height-1 && i == width/2)
+                {
+                    for (int x = -7; x < 7; x++)
+                    {
+                        for (int y = 0; y < 14; y++)
+                        {
+                            GameObject tile = (GameObject)GameObject.Instantiate(Tile.allTileModels[Tile.Type.STONE], new Vector3((x+i) * 2, 0, (y+j) * 2), Quaternion.Euler(new Vector3(0, 0, 0)));
+
+                        }
+                    }
+
+                    continue;
+                }
+
                 
                 if (i == 0 || i == width-1 || j == 0 || j == height-1)
                     blockType = Block.Type.BORDER;
                 else
                     blockType = Block.Type.STONE;
-                
-                if (blockType == Block.Type.BORDER || perlinNoise(perlinX,perlinY,0.4f) > -0.2f)
+
+                currentSeed = defaultSeed;
+                if (blockType == Block.Type.BORDER || perlinNoise(perlinX,perlinY,0.6f) > -0.2f)
                 {
                     GameObject block = (GameObject)GameObject.Instantiate(Block.allBlockModels[blockType], new Vector3(i * 2, 0, j * 2), Quaternion.Euler(new Vector3(0, 0, 0)));
                     
@@ -48,14 +66,23 @@ public class LevelGenerator
                 {
                     if (UnityEngine.Random.Range(0,1f) < 0.015f)
                     {
-                        // TODO spawn NPC
-                        GameObject npc = (GameObject)GameObject.Instantiate(sapien, new Vector3(i * 2, 0, j * 2),Quaternion.identity);
-                        Sapien mob = npc.GetComponent<Sapien>();
+                        currentSeed = defaultSeed + 123;
 
+                        if (perlinNoise(perlinX,perlinY,0.2f) > 0.0f)
+                        {
+                            GameObject npc = (GameObject)GameObject.Instantiate(sapien, new Vector3(i * 2, 0, j * 2),Quaternion.identity);
+                            Sapien mob = npc.GetComponent<Sapien>();
+                        }
+                        else
+                        {
+                            GameObject npc = (GameObject)GameObject.Instantiate(flores, new Vector3(i * 2, 0, j * 2),Quaternion.identity);
+                            Flores mob = npc.GetComponent<Flores>();
+                        }
                     }
                 }
             }
         }
+
         OnGenerateMap(level,width,height);
     }
 
