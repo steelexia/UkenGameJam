@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
-
+using Pathfinding;
 
 /// <summary>
 /// Mobile Unit
@@ -18,6 +18,7 @@ public class Mob : Entity {
     public Animation anim;
     Vector3 velocity = Vector3.zero;
     public AudioManager audioManager;
+    public bool isAlive = true;
     
 	// Use this for initialization
      protected virtual void Start () {
@@ -81,6 +82,13 @@ public class Mob : Entity {
 
     public virtual void Die()
     {
-
+        isAlive = false;
+        	Bounds b = gameObject.collider.bounds;
+			Destroy (gameObject.collider);
+        GraphUpdateObject guo = new GraphUpdateObject(b);
+		AstarPath.active.UpdateGraphs (guo,0.0f);
+        AstarPath.active.FlushGraphUpdates();
+          anim.Play("human_death");
+        
     }
 }

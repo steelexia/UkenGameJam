@@ -20,12 +20,13 @@ public class GameMain : MonoBehaviour {
 
     public Player player;
     public Level level;
-
+    public AudioManager audioManager;
 	// Use this for initialization
 	void Start () {
 
         loadResources();
         level = new Level(player);
+        audioManager.PlayAudio(2);
 	}  
 
     void OnGUI()

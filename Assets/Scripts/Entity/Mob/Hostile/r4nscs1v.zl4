@@ -216,26 +216,24 @@ public class NPC : AIPath
 
     IEnumerator BreakBlock()
     {
-        if (isBlockingBreaking == false)
+        if (isAttacking == false)
         {
-           
             RaycastHit hit;
             if (Physics.Raycast(this.transform.position + new Vector3(0, 0, 0), transform.forward, out hit, 3.5f))
             {
                 Block block;
                 if ((block = hit.collider.gameObject.GetComponent<Block>()) != null)
                 {
-                    isBlockingBreaking = true;
                     block.Damage(atkDamage);
 
                     anim.Play("human_attack");
-                    yield return new WaitForSeconds(attackRate);
-                    isBlockingBreaking = false;
-                }
+
 
                 }
             }
-          
+            yield return new WaitForSeconds(attackRate);
+            isAttacking = false;
+        }
     }
     void Battle()
     {

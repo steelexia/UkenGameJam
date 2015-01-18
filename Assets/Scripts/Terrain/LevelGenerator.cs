@@ -46,11 +46,11 @@ public class LevelGenerator
                 }
                 else
                 {
-                    if (UnityEngine.Random.Range(0,1f) < 0.01f)
+                    if (UnityEngine.Random.Range(0,1f) < 0.015f)
                     {
                         // TODO spawn NPC
-                        //GameObject npc = (GameObject)GameObject.Instantiate(sapien);
-                        //Sapien mob = npc.GetComponent<Sapien>();
+                        GameObject npc = (GameObject)GameObject.Instantiate(sapien, new Vector3(i * 2, 0, j * 2),Quaternion.identity);
+                        Sapien mob = npc.GetComponent<Sapien>();
 
                     }
                 }
