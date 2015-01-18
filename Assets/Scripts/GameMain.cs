@@ -84,5 +84,6 @@ public class GameMain : MonoBehaviour {
         allSprites.Add(Sprite.LIFE_BAR_LARGE_2, (Texture2D)Resources.Load("life_bar_large_2", typeof(Texture2D)));
         allSprites.Add(Sprite.LIFE_BAR_LARGE_FILL, (Texture2D)Resources.Load("life_bar_large_life", typeof(Texture2D)));
 
+        Mob.spearProjectile = (GameObject)Resources.Load("projectile_spear", typeof(GameObject));
     }
 }

@@ -30,7 +30,10 @@ public class Player : Mob {
         }
         else if (Input.GetMouseButtonDown(1))
         {
-            //TODO throw spear
+            GameObject spear = (GameObject)Instantiate(Mob.spearProjectile, gameObject.transform.position + new Vector3(0,2,0), gameObject.transform.rotation);
+            Projectile spearP = spear.GetComponent<Projectile>();
+            spearP.damage = 100;
+            spearP.thrower = 0;
         }
 
         if (Input.GetButtonDown("Eat"))
@@ -49,7 +52,6 @@ public class Player : Mob {
             Heal(50f);
         }
         //progressBar.value = hp / BaseStats.BASEPLAYERHP;
-        progressBar.value = hp / BaseStats.BASEPLAYERHP;
 
 	}
 

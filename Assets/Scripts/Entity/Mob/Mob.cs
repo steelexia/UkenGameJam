@@ -7,6 +7,8 @@ using Pathfinding;
 /// </summary>
 public class Mob : Entity {
 
+    public static GameObject spearProjectile; //loaded in gamemain
+
     public float hp;
     public float xp;
     public float atkDamage;

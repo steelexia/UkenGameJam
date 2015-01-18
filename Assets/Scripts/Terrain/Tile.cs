@@ -10,6 +10,7 @@ public class Tile : MonoBehaviour{
 
     public enum Type{
         STONE,
+        DIRT,
     }
     
     public Type type;
@@ -34,5 +35,8 @@ public class Tile : MonoBehaviour{
 
         model = (GameObject)Resources.Load("tile_stone", typeof(GameObject));
         allTileModels.Add(Type.STONE, model);
+
+        model = (GameObject)Resources.Load("tile_dirt", typeof(GameObject));
+        allTileModels.Add(Type.DIRT, model);
     }
 }

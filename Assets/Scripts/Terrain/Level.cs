@@ -11,8 +11,8 @@ public class Level{
 
     public Level(Player player)
     {
-        width = 64;
-        height = 64;
+        width = 32;
+        height = 128;
         LevelGenerator.generate(this, width, height);
 
         allMobs = new List<Mob>();
