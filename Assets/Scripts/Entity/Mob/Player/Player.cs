@@ -26,7 +26,7 @@ public class Player : Mob {
         RaycastHit hit;
          
       
-        if(Physics.Raycast(this.transform.position - new Vector3(0,1,0), transform.forward,out hit,1))
+        if(Physics.Raycast(this.transform.position + new Vector3(0,0,0), transform.forward,out hit,1.5f))
         {
             Block block;
             if((block = hit.collider.gameObject.GetComponent<Block>())!=null)
