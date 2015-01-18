@@ -12,6 +12,7 @@ public class Block : MonoBehaviour {
     public Level level;
     public enum Type{
         STONE,
+        BORDER,
     }
 	
     public Type type;
@@ -35,6 +36,9 @@ public class Block : MonoBehaviour {
     }
     public void Damage(float damage)
     {
+        if (type == Type.BORDER)
+            return;
+
         health -= damage;
 
         //TODO: need to find all childs and do this, but also gotta change renderer back after a delay
@@ -64,5 +68,8 @@ public class Block : MonoBehaviour {
 
         model = (GameObject)Resources.Load("block_stone", typeof(GameObject));
         allBlockModels.Add(Type.STONE, model);
+
+        model = (GameObject)Resources.Load("block_border", typeof(GameObject));
+        allBlockModels.Add(Type.BORDER, model);
     }
 }

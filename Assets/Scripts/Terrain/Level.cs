@@ -26,6 +26,8 @@ public class Level{
 
     protected void removeSingleEdge(int i, int j, bool west, bool south)
     {
+
+
         int addX = west ? -1 : 1;
         int addZ = south ? -1 : 1;
         String eastWest = west ? "west" : "east";
@@ -42,8 +44,11 @@ public class Level{
 
         if (leftRight && upDown && diag)
         {
-            GameObject go = block[i,j].gameObject.transform.FindChild("block_stone_" + northSouth + "_" + eastWest).gameObject;
-            go.SetActive(false);
+            if (block[i,j].type != Block.Type.BORDER)
+            {
+                GameObject go = block[i,j].gameObject.transform.FindChild("block_stone_" + northSouth + "_" + eastWest).gameObject;
+                go.SetActive(false);
+            }
         }
     }
 
