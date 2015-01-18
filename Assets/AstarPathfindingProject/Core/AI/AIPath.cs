@@ -171,6 +171,7 @@ public class AIPath : Mob {
 	 * \see RepeatTrySearchPath
 	 */
 	protected virtual void Start () {
+        base.Start();
 		startHasRun = true;
 		OnEnable ();
 	}
@@ -328,7 +329,7 @@ public class AIPath : Mob {
 	}
 	
 	public virtual void Update () {
-		
+        base.Update();
 		if (!canMove) { return; }
 		
 		Vector3 dir = CalculateVelocity (GetFeetPosition());

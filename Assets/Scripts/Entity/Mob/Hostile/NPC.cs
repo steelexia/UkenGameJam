@@ -19,192 +19,286 @@ using Pathfinding.RVO;
      * 
      * \note This script assumes Y is up and that character movement is mostly on the XZ plane.
      */
-    [RequireComponent(typeof(Seeker))]
-    public class NPC : AIPath
+[RequireComponent(typeof(Seeker))]
+public class NPC : AIPath
+{
+
+    /** Animation component.
+     * Should hold animations "awake" and "forward"
+     * 
+     * 
+     * 
+     */
+
+    public float wanderDist = 8.0f;
+    public enum AIState
+    {
+        Wander,
+        Seek,
+        Battle
+    }
+    public Animation anim;
+    public AIState State = AIState.Wander;
+    /** Minimum velocity for moving */
+    public float sleepVelocity = 0.4F;
+
+    /** Speed relative to velocity with which to play animations */
+    public float animationSpeed = 0.2F;
+
+    /** Effect which will be instantiated when end of path is reached.
+     * \see OnTargetReached */
+    public GameObject endOfPathEffect;
+
+    public Transform player;
+
+    public new void Start()
     {
 
-        /** Animation component.
-         * Should hold animations "awake" and "forward"
-         * 
-         * 
-         * 
-         */
+        player = GameObject.Find("Player").transform;
+        //Prioritize the walking animation
+        //anim["forward"].layer = 10;
 
-        public float wanderDist = 8.0f;
-        public enum AIState
+        //Play all animations
+        //anim.Play ("awake");
+        //anim.Play ("forward");
+
+        //Setup awake animations properties
+        //anim["awake"].wrapMode = WrapMode.Clamp;
+        //anim["awake"].speed = 0;
+        //anim["awake"].normalizedTime = 1F;
+
+        //Call Start in base script (AIPath)
+        base.Start();
+    }
+
+    /** Point for the last spawn of #endOfPathEffect */
+    protected Vector3 lastTarget;
+
+    /**
+     * Called when the end of path has been reached.
+     * An effect (#endOfPathEffect) is spawned when this function is called
+     * However, since paths are recalculated quite often, we only spawn the effect
+     * when the current position is some distance away from the previous spawn-point
+    */
+    public override void OnTargetReached()
+    {
+
+        if (endOfPathEffect != null && Vector3.Distance(tr.position, lastTarget) > 1)
         {
-            Wander
+            GameObject.Instantiate(endOfPathEffect, tr.position, tr.rotation);
+            lastTarget = tr.position;
         }
-        public Animation anim;
-        public AIState State = AIState.Wander;
-        /** Minimum velocity for moving */
-        public float sleepVelocity = 0.4F;
+    }
 
-        /** Speed relative to velocity with which to play animations */
-        public float animationSpeed = 0.2F;
+    public override Vector3 GetFeetPosition()
+    {
+        return tr.position;
+    }
 
-        /** Effect which will be instantiated when end of path is reached.
-         * \see OnTargetReached */
-        public GameObject endOfPathEffect;
-
-        public new void Start()
+    protected new void Update()
+    {
+        switch (State)
         {
-
-            //Prioritize the walking animation
-            //anim["forward"].layer = 10;
-
-            //Play all animations
-            //anim.Play ("awake");
-            //anim.Play ("forward");
-
-            //Setup awake animations properties
-            //anim["awake"].wrapMode = WrapMode.Clamp;
-            //anim["awake"].speed = 0;
-            //anim["awake"].normalizedTime = 1F;
-
-            //Call Start in base script (AIPath)
-            base.Start();
+            case AIState.Wander: Wander(); break;
+            case AIState.Seek: Seek(); break;
+            case AIState.Battle: Battle(); break;
         }
-
-        /** Point for the last spawn of #endOfPathEffect */
-        protected Vector3 lastTarget;
-
-        /**
-         * Called when the end of path has been reached.
-         * An effect (#endOfPathEffect) is spawned when this function is called
-         * However, since paths are recalculated quite often, we only spawn the effect
-         * when the current position is some distance away from the previous spawn-point
-        */
-        public override void OnTargetReached()
+        //Get velocity in world-space
+        Vector3 velocity;
+        if (canMove)
         {
 
-            if (endOfPathEffect != null && Vector3.Distance(tr.position, lastTarget) > 1)
+            //Calculate desired velocity
+            Vector3 dir = CalculateVelocity(GetFeetPosition());
+
+            //Rotate towards targetDirection (filled in by CalculateVelocity)
+            RotateTowards(targetDirection);
+
+            dir.y = 0;
+            if (dir.sqrMagnitude > sleepVelocity * sleepVelocity)
             {
-                GameObject.Instantiate(endOfPathEffect, tr.position, tr.rotation);
-                lastTarget = tr.position;
+                //If the velocity is large enough, move
             }
-        }
-
-        public override Vector3 GetFeetPosition()
-        {
-            return tr.position;
-        }
-
-        protected new void Update()
-        {
-            switch(State)
+            else
             {
-                case AIState.Wander: Wander(); break;
+                //Otherwise, just stand still (this ensures gravity is applied)
+                dir = Vector3.zero;
             }
-            //Get velocity in world-space
-            Vector3 velocity;
-            if (canMove)
+
+            if (this.rvoController != null)
             {
-
-                //Calculate desired velocity
-                Vector3 dir = CalculateVelocity(GetFeetPosition());
-
-                //Rotate towards targetDirection (filled in by CalculateVelocity)
-                RotateTowards(targetDirection);
-
-                dir.y = 0;
-                if (dir.sqrMagnitude > sleepVelocity * sleepVelocity)
+                rvoController.Move(dir);
+                velocity = rvoController.velocity;
+            }
+            else
+                if (navController != null)
                 {
-                    //If the velocity is large enough, move
-                }
-                else
-                {
-                    //Otherwise, just stand still (this ensures gravity is applied)
-                    dir = Vector3.zero;
-                }
-
-                if (this.rvoController != null)
-                {
-                    rvoController.Move(dir);
-                    velocity = rvoController.velocity;
-                }
-                else
-                    if (navController != null)
-                    {
 #if FALSE
 					navController.SimpleMove (GetFeetPosition(), dir);
 #endif
-                        velocity = Vector3.zero;
-                    }
-                    else if (controller != null)
-                    {
-                        controller.SimpleMove(dir);
-                        velocity = controller.velocity;
-                    }
-                    else
-                    {
-                        Debug.LogWarning("No NavmeshController or CharacterController attached to GameObject");
-                        velocity = Vector3.zero;
-                    }
-            }
-            else
-            {
-                velocity = Vector3.zero;
-            }
-
-
-            //Animation
-
-            //Calculate the velocity relative to this transform's orientation
-            Vector3 relVelocity = tr.InverseTransformDirection(velocity);
-            relVelocity.y = 0;
-
-            if (velocity.sqrMagnitude <= sleepVelocity * sleepVelocity)
-            {
-                //Fade out walking animation
-                anim.Blend("human_run", 0, 0.2F);
-            }
-            else
-            {
-                //Fade in walking animation
-                anim.Blend("human_run", 1, 0.2F);
-
-                //Modify animation speed to match velocity
-                AnimationState state = anim["human_run"];
-
-                float speed = relVelocity.z;
-                state.speed = speed * animationSpeed;
-            }
-        }
-
-        void Wander()
-        {
-
-
-            target.position = transform.position + Quaternion.Euler(0, Random.value * 360, 0) * Vector3.right * wanderDist;
-
-
-        }
-        /*
-        public static Transform WithinSight2D(Transform transform, float fieldOfViewAngle, float viewDistance, LayerMask objectLayerMask)
-        {
-            Transform objectFound = null;
-            var hitColliders = Physics2D.OverlapCircleAll(transform.position, viewDistance, objectLayerMask);
-            if (hitColliders != null)
-            {
-                float minAngle = Mathf.Infinity;
-                for (int i = 0; i < hitColliders.Length; ++i)
+                    velocity = Vector3.zero;
+                }
+                else if (controller != null)
                 {
-                    float angle;
-                    Transform obj;
-                    // Call the 2D WithinSight function to determine if this specific object is within sight
-                    if ((obj = WithinSight(transform, fieldOfViewAngle, viewDistance, hitColliders[i].transform, true, out angle)) != null)
+                    controller.SimpleMove(dir);
+                    velocity = controller.velocity;
+                }
+                else
+                {
+                    Debug.LogWarning("No NavmeshController or CharacterController attached to GameObject");
+                    velocity = Vector3.zero;
+                }
+        }
+        else
+        {
+            velocity = Vector3.zero;
+        }
+
+
+        //Animation
+
+        //Calculate the velocity relative to this transform's orientation
+        Vector3 relVelocity = tr.InverseTransformDirection(velocity);
+        relVelocity.y = 0;
+
+        if (velocity.sqrMagnitude <= sleepVelocity * sleepVelocity)
+        {
+            //Fade out walking animation
+            anim.Blend("human_run", 0, 0.2F);
+        }
+        else
+        {
+            //Fade in walking animation
+            anim.Blend("human_run", 1, 0.2F);
+
+            //Modify animation speed to match velocity
+            AnimationState state = anim["human_run"];
+
+            float speed = relVelocity.z;
+            state.speed = speed * animationSpeed;
+        }
+    }
+
+    void Wander()
+    {
+
+
+        target.position = transform.position + Quaternion.Euler(0, Random.value * 360, 0) * Vector3.right * wanderDist;
+        Transform obj;
+                // Call the 2D WithinSight function to determine if this specific object is within sight
+        float angle;
+      if ((obj = WithinSight(transform, 180, 20, player, true, out angle)) != null)
+      {
+          State = AIState.Seek;
+      }
+
+    }
+    void Seek()
+    {
+        target.position = player.position;
+
+             Vector3 direction;
+            // check each object. All it takes is one object to be able to return success
+ 
+                direction = transform.position - player.position;
+                // check to see if the square magnitude is less than what is specified
+                if (Vector3.SqrMagnitude(direction) < attackDistance) 
+                 {
+                         State = AIState.Battle;
+                }
+    }
+    void Battle()
+    {
+        if(attackCooldown ==currentCooldown)
+        {
+            audioManager.PlayAudio(0);
+        }
+    }
+
+    public static Transform WithinSight2D(Transform transform, float fieldOfViewAngle, float viewDistance, LayerMask objectLayerMask)
+    {
+        Transform objectFound = null;
+        var hitColliders = Physics2D.OverlapCircleAll(transform.position, viewDistance, objectLayerMask);
+        if (hitColliders != null)
+        {
+            float minAngle = Mathf.Infinity;
+            for (int i = 0; i < hitColliders.Length; ++i)
+            {
+                float angle;
+                Transform obj;
+                // Call the 2D WithinSight function to determine if this specific object is within sight
+                if ((obj = WithinSight(transform, fieldOfViewAngle, viewDistance, hitColliders[i].transform, true, out angle)) != null)
+                {
+                    // This object is within sight. Set it to the objectFound GameObject if the angle is less than any of the other objects
+                    if (angle < minAngle)
                     {
-                        // This object is within sight. Set it to the objectFound GameObject if the angle is less than any of the other objects
-                        if (angle < minAngle)
-                        {
-                            minAngle = angle;
-                            objectFound = obj;
-                        }
+                        minAngle = angle;
+                        objectFound = obj;
                     }
                 }
             }
-            return objectFound;
-         * */
         }
+        return objectFound;
+
+    }
+    private static Transform WithinSight(Transform transform, float fieldOfViewAngle, float viewDistance, Transform targetObject, bool usePhysics2D, out float angle)
+    {
+        // The target object needs to be within the field of view of the current object
+        var direction = targetObject.position - transform.position;
+        if (usePhysics2D)
+        {
+            angle = Vector3.Angle(direction, transform.up);
+        }
+        else
+        {
+            angle = Vector3.Angle(direction, transform.forward);
+        }
+        if (direction.magnitude < viewDistance && angle < fieldOfViewAngle * 0.5f)
+        {
+            // The hit agent needs to be within view of the current agent
+            if (LineOfSight(transform, targetObject, usePhysics2D) != null)
+            {
+                return targetObject; // return the target object meaning it is within sight
+            }
+            else
+            {
+                // If the linecast doesn't hit anything then that the target object doesn't have a collider and there is nothing in the way
+                if (targetObject.gameObject.activeSelf)
+                    return targetObject;
+            }
+        }
+        // return null if the target object is not within sight
+        return null;
+    }
+    public static Transform LineOfSight(Transform transform, Transform targetObject, bool usePhysics2D)
+    {
+#if !(UNITY_4_0 || UNITY_4_0_1 || UNITY_4_1 || UNITY_4_2)
+        if (usePhysics2D)
+        {
+            RaycastHit2D hit;
+            if ((hit = Physics2D.Linecast(transform.position, targetObject.position)))
+            {
+                if (hit.transform.Equals(targetObject))
+                {
+                    return targetObject; // return the target object meaning it is within sight
+                }
+            }
+        }
+        else
+        {
+#endif
+            RaycastHit hit;
+            if (Physics.Linecast(transform.position, targetObject.position, out hit))
+            {
+                if (hit.transform.Equals(targetObject))
+                {
+                    return targetObject; // return the target object meaning it is within sight
+                }
+            }
+#if !(UNITY_4_0 || UNITY_4_0_1 || UNITY_4_1 || UNITY_4_2)
+        }
+#endif
+        return null;
+    }
+}
   
