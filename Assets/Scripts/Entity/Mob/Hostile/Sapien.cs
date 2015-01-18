@@ -6,7 +6,7 @@ public class Sapien : NPC {
 	// Use this for initialization
 
     new void Start () {
-
+        base.Start();
 	    //TODO
 	}
 	

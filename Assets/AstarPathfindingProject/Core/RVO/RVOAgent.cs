@@ -310,7 +310,7 @@ namespace Pathfinding.RVO.Sampled {
 					line1 = center.normalized * (center.magnitude - radius);
 					dir1 = new Vector2(line1.y,-line1.x).normalized;
 					line1 += offset;
-					return;
+					
 				}
 
 				colliding = false;
