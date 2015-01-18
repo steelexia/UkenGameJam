@@ -1,5 +1,7 @@
 #if !(UNITY_4_0 || UNITY_4_0_1 || UNITY_4_1 || UNITY_4_2)
 using UnityEngine;
+using BehaviorDesigner.Runtime;
+using BehaviorDesigner.Runtime.Tasks;
 
 namespace BehaviorDesigner.Runtime.Tasks.Basic.UnityAnimator
 {
@@ -7,8 +9,6 @@ namespace BehaviorDesigner.Runtime.Tasks.Basic.UnityAnimator
     [TaskDescription("Plays an animator state. Returns Success.")]
     public class Play : Action
     {
-        [Tooltip("The GameObject that the task operates on. If null the task GameObject is used.")]
-        public SharedGameObject targetGameObject;
         [Tooltip("The name of the state")]
         public SharedString stateName;
         [Tooltip("The layer where the state is")]
@@ -18,9 +18,9 @@ namespace BehaviorDesigner.Runtime.Tasks.Basic.UnityAnimator
 
         private Animator animator;
 
-        public override void OnStart()
+        public override void OnAwake()
         {
-            animator = GetDefaultGameObject(targetGameObject.Value).GetComponent<Animator>();
+            animator = gameObject.GetComponent<Animator>();
         }
 
         public override TaskStatus OnUpdate()
@@ -37,8 +37,9 @@ namespace BehaviorDesigner.Runtime.Tasks.Basic.UnityAnimator
 
         public override void OnReset()
         {
-            targetGameObject = null;
-            stateName = "";
+            if (stateName != null) {
+                stateName.Value = "";
+            }
             layer = -1;
             normalizedTime = float.NegativeInfinity;
         }

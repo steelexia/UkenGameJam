@@ -1,4 +1,6 @@
 using UnityEngine;
+using BehaviorDesigner.Runtime;
+using BehaviorDesigner.Runtime.Tasks;
 
 namespace BehaviorDesigner.Runtime.Tasks.Basic.UnityGameObject
 {
@@ -6,20 +8,25 @@ namespace BehaviorDesigner.Runtime.Tasks.Basic.UnityGameObject
     [TaskDescription("Destorys the specified GameObject immediately. Returns Success.")]
     public class DestroyImmediate : Action
     {
-        [Tooltip("The GameObject that the task operates on. If null the task GameObject is used.")]
-        public SharedGameObject targetGameObject;
+        [Tooltip("GameObject to destroy")]
+        public SharedGameObject destroyGameObject;
 
         public override TaskStatus OnUpdate()
         {
-            var destroyGameObject = GetDefaultGameObject(targetGameObject.Value);
-            GameObject.DestroyImmediate(destroyGameObject);
+            if (destroyGameObject.Value == null) {
+                destroyGameObject.Value = gameObject;
+            }
+
+            GameObject.DestroyImmediate(destroyGameObject.Value);
 
             return TaskStatus.Success;
         }
 
         public override void OnReset()
         {
-            targetGameObject = null;
+            if (destroyGameObject != null) {
+                destroyGameObject.Value = null;
+            }
         }
     }
 }

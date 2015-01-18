@@ -10,6 +10,7 @@ public class Sapien : Mob {
 	
 	// Update is called once per frame
 	void Update () {
+        base.Update();
 	    //TODO
 	}
 }

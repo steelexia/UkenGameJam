@@ -1,4 +1,6 @@
 using UnityEngine;
+using BehaviorDesigner.Runtime;
+using BehaviorDesigner.Runtime.Tasks;
 
 namespace BehaviorDesigner.Runtime.Tasks.Basic.UnityGameObject
 {
@@ -6,20 +8,19 @@ namespace BehaviorDesigner.Runtime.Tasks.Basic.UnityGameObject
     [TaskDescription("Returns Success if tags match, otherwise Failure.")]
     public class CompareTag : Conditional
     {
-        [Tooltip("The GameObject that the task operates on. If null the task GameObject is used.")]
-        public SharedGameObject targetGameObject;
         [Tooltip("The tag to compare against")]
         public SharedString tag;
 
         public override TaskStatus OnUpdate()
         {
-            return GetDefaultGameObject(targetGameObject.Value).CompareTag(tag.Value) ? TaskStatus.Success : TaskStatus.Failure;
+            return gameObject.CompareTag(tag.Value) ? TaskStatus.Success : TaskStatus.Failure;
         }
 
         public override void OnReset()
         {
-            targetGameObject = null;
-            tag = "";
+            if (tag != null) {
+                tag.Value = "";
+            }
         }
     }
 }

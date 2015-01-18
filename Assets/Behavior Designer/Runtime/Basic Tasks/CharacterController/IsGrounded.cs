@@ -1,4 +1,6 @@
 using UnityEngine;
+using BehaviorDesigner.Runtime;
+using BehaviorDesigner.Runtime.Tasks;
 
 namespace BehaviorDesigner.Runtime.Tasks.Basic.UnityCharacterController
 {
@@ -6,14 +8,11 @@ namespace BehaviorDesigner.Runtime.Tasks.Basic.UnityCharacterController
     [TaskDescription("Returns Success if the character is grounded, otherwise Failure.")]
     public class IsGrounded : Conditional
     {
-        [Tooltip("The GameObject that the task operates on. If null the task GameObject is used.")]
-        public SharedGameObject targetGameObject;
-
         private CharacterController characterController;
 
-        public override void OnStart()
+        public override void OnAwake()
         {
-            characterController = GetDefaultGameObject(targetGameObject.Value).GetComponent<CharacterController>();
+            characterController = gameObject.GetComponent<CharacterController>();
         }
 
         public override TaskStatus OnUpdate()
@@ -24,11 +23,6 @@ namespace BehaviorDesigner.Runtime.Tasks.Basic.UnityCharacterController
             }
 
             return characterController.isGrounded ? TaskStatus.Success : TaskStatus.Failure;
-        }
-
-        public override void OnReset()
-        {
-            targetGameObject = null;
         }
     }
 }

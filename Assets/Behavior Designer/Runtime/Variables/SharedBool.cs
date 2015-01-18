@@ -14,6 +14,5 @@ namespace BehaviorDesigner.Runtime
         public override void SetValue(object value) { mValue = (bool)value; }
 
         public override string ToString() { return mValue.ToString(); }
-        public static implicit operator SharedBool(bool value) { var sharedVariable = new SharedBool(); sharedVariable.SetValue(value); return sharedVariable; }
     }
 }

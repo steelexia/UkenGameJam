@@ -14,6 +14,5 @@ namespace BehaviorDesigner.Runtime
         public override void SetValue(object value) { mValue = (float)value; }
 
         public override string ToString() { return mValue.ToString(); }
-        public static implicit operator SharedFloat(float value) { var sharedVariable = new SharedFloat(); sharedVariable.SetValue(value); return sharedVariable; }
     }
 }

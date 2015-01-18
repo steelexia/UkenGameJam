@@ -1,4 +1,6 @@
 using UnityEngine;
+using BehaviorDesigner.Runtime;
+using BehaviorDesigner.Runtime.Tasks;
 
 namespace BehaviorDesigner.Runtime.Tasks.Basic.UnityTransform
 {
@@ -6,8 +8,6 @@ namespace BehaviorDesigner.Runtime.Tasks.Basic.UnityTransform
     [TaskDescription("Applies a rotation. Returns Success.")]
     public class RotateAround : Action
     {
-        [Tooltip("The GameObject that the task operates on. If null the task GameObject is used.")]
-        public SharedGameObject targetGameObject;
         [Tooltip("Point to rotate around")]
         public SharedVector3 point;
         [Tooltip("Axis to rotate around")]
@@ -15,31 +15,29 @@ namespace BehaviorDesigner.Runtime.Tasks.Basic.UnityTransform
         [Tooltip("Amount to rotate")]
         public SharedFloat angle;
 
-        private Transform targetTransform;
-
-        public override void OnStart()
-        {
-            targetTransform = GetDefaultGameObject(targetGameObject.Value).GetComponent<Transform>();
-        }
-
         public override TaskStatus OnUpdate()
         {
-            if (targetTransform == null) {
+            if (transform == null) {
                 Debug.LogWarning("Transform is null");
                 return TaskStatus.Failure;
             }
 
-            targetTransform.RotateAround(point.Value, axis.Value, angle.Value);
+            transform.RotateAround(point.Value, axis.Value, angle.Value);
 
             return TaskStatus.Success;
         }
 
         public override void OnReset()
         {
-            targetGameObject = null;
-            point = Vector3.zero;
-            axis = Vector3.zero;
-            angle = 0;
+            if (point != null) {
+                point.Value = Vector3.zero;
+            }
+            if (axis != null) {
+                axis.Value = Vector3.zero;
+            }
+            if (angle != null) {
+                angle.Value = 0;
+            }
         }
     }
 }

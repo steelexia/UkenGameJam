@@ -8,75 +8,48 @@ namespace BehaviorDesigner.Runtime.Tasks
     public class StartBehaviorTree : Action
     {
         [Tooltip("The GameObject of the behavior tree that should be started. If null use the current behavior")]
-        public SharedGameObject behaviorGameObject;
+        public GameObject behaviorGameObject;
         [Tooltip("The group of the behavior tree that should be started")]
-        public SharedInt group;
-        [Tooltip("Should this task wait for the behavior tree to complete?")]
-        public SharedBool waitForCompletion = false;
+        public int group;
 
-        private bool behaviorComplete;
         private Behavior behavior;
 
-        public override void OnStart()
+        public override void OnAwake()
         {
-            var behaviorTrees = GetDefaultGameObject(behaviorGameObject.Value).GetComponents<Behavior>();
-            if (behaviorTrees.Length == 1) {
-                behavior = behaviorTrees[0];
-            } else if (behaviorTrees.Length > 1) {
-                for (int i = 0; i < behaviorTrees.Length; ++i) {
-                    if (behaviorTrees[i].Group == group.Value) {
-                        behavior = behaviorTrees[i];
-                        break;
-                    }
-                }
-                // If the group can't be found then use the first behavior tree
-                if (behavior == null) {
-                    behavior = behaviorTrees[0];
-                }
+            // If behaviorGameObject is null use the GameObject that this task is attached to.
+            if (behaviorGameObject == null) {
+                behaviorGameObject = gameObject;
             }
-
-            if (behavior != null) {
-                behavior.EnableBehavior();
-
-                if (waitForCompletion.Value) {
-                    behaviorComplete = false;
-                    behavior.OnBehaviorEnd += BehaviorEnded;
+            if (behaviorGameObject != null) {// search for the behavior tree based on the group number
+                var behaviorTrees = behaviorGameObject.GetComponents<Behavior>();
+                if (behaviorTrees.Length == 1) {
+                    behavior = behaviorTrees[0];
+                } else {
+                    for (int i = 0; i < behaviorTrees.Length; ++i) {
+                        if (behaviorTrees[i].Group == group) {
+                            behavior = behaviorTrees[i];
+                            break;
+                        }
+                    }
+                    // If the group can't be found then use the first behavior tree
+                    if (behavior == null) {
+                        behavior = behaviorTrees[0];
+                    }
                 }
             }
         }
 
         public override TaskStatus OnUpdate()
         {
-            if (behavior == null) {
-                return TaskStatus.Failure;
-            }
-
-            // Return a status of running if we are waiting for the behavior tree to end and it hasn't ended yet
-            if (waitForCompletion.Value && !behaviorComplete) {
-                return TaskStatus.Running;
-            }
-
+            // Start the behavior and return success.
+            behavior.EnableBehavior();
             return TaskStatus.Success;
-        }
-
-        private void BehaviorEnded()
-        {
-            behaviorComplete = true;
-        }
-
-        public override void OnEnd()
-        {
-            if (behavior != null && waitForCompletion.Value) {
-                behavior.OnBehaviorEnd -= BehaviorEnded;
-            }
         }
 
         public override void OnReset()
         {
             // Reset the properties back to their original values.
-            behaviorGameObject = null;
-            group = 0;
-            waitForCompletion = false;
+            behavior = null;
         }
     }
 }

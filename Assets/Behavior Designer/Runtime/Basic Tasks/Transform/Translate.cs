@@ -1,4 +1,6 @@
 using UnityEngine;
+using BehaviorDesigner.Runtime;
+using BehaviorDesigner.Runtime.Tasks;
 
 namespace BehaviorDesigner.Runtime.Tasks.Basic.UnityTransform
 {
@@ -6,36 +8,28 @@ namespace BehaviorDesigner.Runtime.Tasks.Basic.UnityTransform
     [TaskDescription("Moves the transform in the direction and distance of translation. Returns Success.")]
     public class Translate : Action
     {
-        [Tooltip("The GameObject that the task operates on. If null the task GameObject is used.")]
-        public SharedGameObject targetGameObject;
         [Tooltip("Move direction and distance")]
         public SharedVector3 translation;
         [Tooltip("Specifies which axis the rotation is relative to")]
         public Space relativeTo = Space.Self;
 
-        private Transform targetTransform;
-
-        public override void OnStart()
-        {
-            targetTransform = GetDefaultGameObject(targetGameObject.Value).GetComponent<Transform>();
-        }
-
         public override TaskStatus OnUpdate()
         {
-            if (targetTransform == null) {
+            if (transform == null) {
                 Debug.LogWarning("Transform is null");
                 return TaskStatus.Failure;
             }
 
-            targetTransform.Translate(translation.Value, relativeTo);
+            transform.Translate(translation.Value, relativeTo);
 
             return TaskStatus.Success;
         }
 
         public override void OnReset()
         {
-            targetGameObject = null;
-            translation = Vector3.zero;
+            if (translation != null) {
+                translation.Value = Vector3.zero;
+            }
             relativeTo = Space.Self;
         }
     }

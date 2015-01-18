@@ -1,4 +1,7 @@
 using UnityEngine;
+using BehaviorDesigner.Runtime;
+using BehaviorDesigner.Runtime.Tasks;
+using UnityAnimation = UnityEngine.Animation;
 
 namespace BehaviorDesigner.Runtime.Tasks.Basic.UnityAnimation
 {
@@ -6,8 +9,6 @@ namespace BehaviorDesigner.Runtime.Tasks.Basic.UnityAnimation
     [TaskDescription("Fades the animation over a period of time and fades other animations out. Returns Success.")]
     public class CrossFade : Action
     {
-        [Tooltip("The GameObject that the task operates on. If null the task GameObject is used.")]
-        public SharedGameObject targetGameObject;
         [Tooltip("The name of the animation")]
         public SharedString animationName;
         [Tooltip("The amount of time it takes to blend")]
@@ -15,30 +16,23 @@ namespace BehaviorDesigner.Runtime.Tasks.Basic.UnityAnimation
         [Tooltip("The play mode of the animation")]
         public PlayMode playMode = PlayMode.StopSameLayer;
 
-        // cache the animation component
-        private Animation targetAnimation;
-
-        public override void OnStart()
-        {
-            targetAnimation = GetDefaultGameObject(targetGameObject.Value).GetComponent<Animation>();
-        }
-
         public override TaskStatus OnUpdate()
         {
-            if (targetAnimation == null) {
+            if (animation == null) {
                 Debug.LogWarning("Animation is null");
                 return TaskStatus.Failure;
             }
 
-            targetAnimation.CrossFade(animationName.Value, fadeLength, playMode);
+            animation.CrossFade(animationName.Value, fadeLength, playMode);
 
             return TaskStatus.Success;
         }
 
         public override void OnReset()
         {
-            targetGameObject = null;
-            animationName.Value = "";
+            if (animationName != null) {
+                animationName.Value = "";
+            }
             fadeLength = 0.3f;
             playMode = PlayMode.StopSameLayer;
         }

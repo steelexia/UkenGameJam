@@ -8,7 +8,7 @@ namespace BehaviorDesigner.Runtime.Tasks
     public class Wait : Action
     {
         [Tooltip("The amount of time to wait")]
-        public SharedFloat waitTime = 1;
+        public float waitTime = 1;
 
         // The time that the task started to wait.
         private float startTime;
@@ -24,7 +24,7 @@ namespace BehaviorDesigner.Runtime.Tasks
         public override TaskStatus OnUpdate()
         {
             // The task is done waiting if the time waitTime has elapsed since the task was started.
-            if (startTime + waitTime.Value < Time.time) {
+            if (startTime + waitTime < Time.time) {
                 return TaskStatus.Success;
             }
             // Otherwise we are still waiting.

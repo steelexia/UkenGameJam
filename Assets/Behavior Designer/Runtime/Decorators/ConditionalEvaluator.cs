@@ -10,8 +10,6 @@ namespace BehaviorDesigner.Runtime.Tasks
     [TaskIcon("{SkinColor}ConditionalEvaluatorIcon.png")]
     public class ConditionalEvaluator : Decorator
     {
-        [Tooltip("Should the conditional task be reevaluated every tick?")]
-        public SharedBool reevaluate;
         [InspectTask]
         [Tooltip("The conditional task to evaluate")]
         public Conditional conditionalTask;
@@ -24,9 +22,6 @@ namespace BehaviorDesigner.Runtime.Tasks
         public override void OnAwake()
         {
             if (conditionalTask != null) {
-                conditionalTask.Owner = Owner;
-                conditionalTask.GameObject = gameObject;
-                conditionalTask.Transform = transform;
                 conditionalTask.OnAwake();
             }
         }
@@ -43,7 +38,7 @@ namespace BehaviorDesigner.Runtime.Tasks
             // CanExecute is called when checking the condition within a while loop so it will be called at least twice. Ensure the conditional task is checked only once
             if (checkConditionalTask) {
                 checkConditionalTask = false;
-                OnUpdate();
+                conditionalTaskFailed = conditionalTask == null || conditionalTask.OnUpdate() == TaskStatus.Failure;
             }
 
             if (conditionalTaskFailed) {
@@ -52,29 +47,10 @@ namespace BehaviorDesigner.Runtime.Tasks
             return executionStatus == TaskStatus.Inactive || executionStatus == TaskStatus.Running;
         }
 
-        public override bool CanReevaluate()
-        {
-            return reevaluate.Value;
-        }
-
-        public override TaskStatus OnUpdate()
-        {
-            var childStatus = conditionalTask.OnUpdate();
-            conditionalTaskFailed = conditionalTask == null || childStatus == TaskStatus.Failure;
-            return childStatus;
-        }
-
         public override void OnChildExecuted(TaskStatus childStatus)
         {
             // Update the execution status after a child has finished running.
             executionStatus = childStatus;
-        }
-
-        public override TaskStatus OverrideStatus()
-        {
-            // This version of OverrideStatus is called when the conditional evaluator fails reevaluation and has to stop all of its children.
-            // Therefore, the return status will always be failure
-            return TaskStatus.Failure;
         }
 
         public override TaskStatus OverrideStatus(TaskStatus status)

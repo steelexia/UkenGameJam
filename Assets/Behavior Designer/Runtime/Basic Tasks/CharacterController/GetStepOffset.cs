@@ -1,4 +1,6 @@
 using UnityEngine;
+using BehaviorDesigner.Runtime;
+using BehaviorDesigner.Runtime.Tasks;
 
 namespace BehaviorDesigner.Runtime.Tasks.Basic.UnityCharacterController
 {
@@ -6,17 +8,14 @@ namespace BehaviorDesigner.Runtime.Tasks.Basic.UnityCharacterController
     [TaskDescription("Stores the step offset of the CharacterController. Returns Success.")]
     public class GetStepOffset : Action
     {
-        [Tooltip("The GameObject that the task operates on. If null the task GameObject is used.")]
-        public SharedGameObject targetGameObject;
         [Tooltip("The step offset of the CharacterController")]
-        [RequiredField]
         public SharedFloat storeValue;
 
         private CharacterController characterController;
 
-        public override void OnStart()
+        public override void OnAwake()
         {
-            characterController = GetDefaultGameObject(targetGameObject.Value).GetComponent<CharacterController>();
+            characterController = gameObject.GetComponent<CharacterController>();
         }
 
         public override TaskStatus OnUpdate()
@@ -33,8 +32,9 @@ namespace BehaviorDesigner.Runtime.Tasks.Basic.UnityCharacterController
 
         public override void OnReset()
         {
-            targetGameObject = null;
-            storeValue = 0;
+            if (storeValue != null) {
+                storeValue.Value = 0;
+            }
         }
     }
 }

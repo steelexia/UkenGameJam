@@ -1,5 +1,7 @@
 #if !(UNITY_4_0 || UNITY_4_0_1 || UNITY_4_1 || UNITY_4_2)
 using UnityEngine;
+using BehaviorDesigner.Runtime;
+using BehaviorDesigner.Runtime.Tasks;
 
 namespace BehaviorDesigner.Runtime.Tasks.Basic.UnityAnimator
 {
@@ -7,16 +9,14 @@ namespace BehaviorDesigner.Runtime.Tasks.Basic.UnityAnimator
     [TaskDescription("Sets a trigger parameter to active or inactive. Returns Success.")]
     public class SetTrigger : Action
     {
-        [Tooltip("The GameObject that the task operates on. If null the task GameObject is used.")]
-        public SharedGameObject targetGameObject;
         [Tooltip("The name of the parameter")]
         public SharedString paramaterName;
 
         private Animator animator;
 
-        public override void OnStart()
+        public override void OnAwake()
         {
-            animator = GetDefaultGameObject(targetGameObject.Value).GetComponent<Animator>();
+            animator = gameObject.GetComponent<Animator>();
         }
 
         public override TaskStatus OnUpdate()
@@ -33,8 +33,9 @@ namespace BehaviorDesigner.Runtime.Tasks.Basic.UnityAnimator
 
         public override void OnReset()
         {
-            targetGameObject = null;
-            paramaterName.Value = "";
+            if (paramaterName.Value != null) {
+                paramaterName.Value = "";
+            }
         }
     }
 }

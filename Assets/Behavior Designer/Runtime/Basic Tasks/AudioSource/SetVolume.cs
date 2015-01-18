@@ -1,4 +1,6 @@
 using UnityEngine;
+using BehaviorDesigner.Runtime;
+using BehaviorDesigner.Runtime.Tasks;
 
 namespace BehaviorDesigner.Runtime.Tasks.Basic.UnityAudioSource
 {
@@ -6,16 +8,14 @@ namespace BehaviorDesigner.Runtime.Tasks.Basic.UnityAudioSource
     [TaskDescription("Sets the volume value of the AudioSource. Returns Success.")]
     public class SetVolume : Action
     {
-        [Tooltip("The GameObject that the task operates on. If null the task GameObject is used.")]
-        public SharedGameObject targetGameObject;
         [Tooltip("The volume value of the AudioSource")]
         public SharedFloat volume;
 
         private AudioSource audioSource;
 
-        public override void OnStart()
+        public override void OnAwake()
         {
-            audioSource = GetDefaultGameObject(targetGameObject.Value).GetComponent<AudioSource>();
+            audioSource = gameObject.GetComponent<AudioSource>();
         }
 
         public override TaskStatus OnUpdate()
@@ -32,8 +32,9 @@ namespace BehaviorDesigner.Runtime.Tasks.Basic.UnityAudioSource
 
         public override void OnReset()
         {
-            targetGameObject = null;
-            volume = 1;
+            if (volume != null) {
+                volume.Value = 1;
+            }
         }
     }
 }

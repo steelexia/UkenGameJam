@@ -1,4 +1,6 @@
 using UnityEngine;
+using BehaviorDesigner.Runtime;
+using BehaviorDesigner.Runtime.Tasks;
 
 namespace BehaviorDesigner.Runtime.Tasks.Basic.UnityAnimator
 {
@@ -6,19 +8,16 @@ namespace BehaviorDesigner.Runtime.Tasks.Basic.UnityAnimator
     [TaskDescription("Stores the integer parameter on an animator. Returns Success.")]
     public class GetIntegerParameter : Action
     {
-        [Tooltip("The GameObject that the task operates on. If null the task GameObject is used.")]
-        public SharedGameObject targetGameObject;
         [Tooltip("The name of the parameter")]
         public SharedString paramaterName;
         [Tooltip("The value of the integer parameter")]
-        [RequiredField]
         public SharedInt storeValue;
 
         private Animator animator;
 
-        public override void OnStart()
+        public override void OnAwake()
         {
-            animator = GetDefaultGameObject(targetGameObject.Value).GetComponent<Animator>();
+            animator = gameObject.GetComponent<Animator>();
         }
 
         public override TaskStatus OnUpdate()
@@ -35,9 +34,12 @@ namespace BehaviorDesigner.Runtime.Tasks.Basic.UnityAnimator
 
         public override void OnReset()
         {
-            targetGameObject = null;
-            paramaterName = "";
-            storeValue = 0;
+            if (paramaterName.Value != null) {
+                paramaterName.Value = "";
+            }
+            if (storeValue != null) {
+                storeValue.Value = 0;
+            }
         }
     }
 }

@@ -1,4 +1,6 @@
 using UnityEngine;
+using BehaviorDesigner.Runtime;
+using BehaviorDesigner.Runtime.Tasks;
 
 namespace BehaviorDesigner.Runtime.Tasks.Basic.UnityBoxCollider
 {
@@ -6,16 +8,14 @@ namespace BehaviorDesigner.Runtime.Tasks.Basic.UnityBoxCollider
     [TaskDescription("Sets the size of the BoxCollider. Returns Success.")]
     public class SetSize : Action
     {
-        [Tooltip("The GameObject that the task operates on. If null the task GameObject is used.")]
-        public SharedGameObject targetGameObject;
         [Tooltip("The size of the BoxCollider")]
         public SharedVector3 size;
 
         private BoxCollider boxCollider;
 
-        public override void OnStart()
+        public override void OnAwake()
         {
-            boxCollider = GetDefaultGameObject(targetGameObject.Value).GetComponent<BoxCollider>();
+            boxCollider = gameObject.GetComponent<BoxCollider>();
         }
 
         public override TaskStatus OnUpdate()
@@ -32,8 +32,9 @@ namespace BehaviorDesigner.Runtime.Tasks.Basic.UnityBoxCollider
 
         public override void OnReset()
         {
-            targetGameObject = null;
-            size = Vector3.zero;
+            if (size != null) {
+                size.Value = Vector3.zero;
+            }
         }
     }
 }
