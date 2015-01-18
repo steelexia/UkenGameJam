@@ -13,10 +13,13 @@ public class Level{
     {
         width = 32;
         height = 128;
-        LevelGenerator.generate(this, width, height);
+
 
         allMobs = new List<Mob>();
         allMobs.Add(player);
+        player.level = this;
+
+        LevelGenerator.generate(this, width, height);
     }
 
     public void update()
@@ -24,10 +27,51 @@ public class Level{
 
     }
 
+    public void attack(Mob attacker)
+    {
+        GameObject attackCube = GameObject.CreatePrimitive(PrimitiveType.Cube);
+        attackCube.transform.position = attacker.gameObject.transform.position + attacker.gameObject.transform.forward * 2 / 2;
+        attackCube.transform.rotation = attacker.gameObject.transform.rotation;
+        attackCube.transform.localScale = new Vector3(1, 100, 2);
+        attackCube.collider.isTrigger = true;
+        attackCube.renderer.enabled = false;
+        
+        for (int i = 0; i < allMobs.Count; i++)
+        {
+            Mob mob = allMobs [i];
+
+            if (!mob.isAlive)
+                continue;
+
+            if (attacker.isPlayer)
+            {
+                if (attackCube.collider.bounds.Intersects(mob.gameObject.collider.bounds))
+                {
+                    if (attacker is Player && !(mob is Player))
+                    {
+                        mob.Damage(BaseStats.BASEPLAYERATK);
+                    }
+                }
+            }
+            else
+            {
+                float distance = (attacker.gameObject.transform.position - mob.gameObject.transform.position).magnitude;
+                Debug.Log(distance);
+                if ((mob is Player) && distance < 2)
+                {
+                    Debug.Log("hit");
+                    mob.Damage(15);
+                }
+            }
+        }
+        
+        GameObject.Destroy(attackCube);
+    }
+    
     protected void removeSingleEdge(int i, int j, bool west, bool south)
     {
-
-
+        
+        
         int addX = west ? -1 : 1;
         int addZ = south ? -1 : 1;
         String eastWest = west ? "west" : "east";

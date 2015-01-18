@@ -28,8 +28,6 @@ public class Projectile : MonoBehaviour {
            
             if (collision.collider.gameObject.GetComponent<Player>() == null)
             Destroy(gameObject);
-
-
         }
         else if (thrower == 1)
         {

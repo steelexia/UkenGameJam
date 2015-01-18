@@ -5,7 +5,7 @@ using Pathfinding;
 public class LevelGenerator
 {
     //public static int currentSeed = UnityEngine.Random.Range(0,100000);
-    public static int defaultSeed = 123;
+    public static int defaultSeed = UnityEngine.Random.Range(0,100000);
     public static int currentSeed = defaultSeed;
 
     public static void generate(Level level, int width, int height)
@@ -47,6 +47,9 @@ public class LevelGenerator
                     continue;
                 }
 
+                if (j > 0 && j < 4 && i > width/2 - 2 && i < width/2 + 2)
+                    continue;
+
                 
                 if (i == 0 || i == width-1 || j == 0 || j == height-1)
                     blockType = Block.Type.BORDER;
@@ -67,7 +70,7 @@ public class LevelGenerator
                 }
                 else
                 {
-                    if (UnityEngine.Random.Range(0,1f) < 0.015f)
+                    if (UnityEngine.Random.Range(0,1f) < 0.025f)
                     {
                         currentSeed = defaultSeed + 123;
 
@@ -75,11 +78,17 @@ public class LevelGenerator
                         {
                             GameObject npc = (GameObject)GameObject.Instantiate(sapien, new Vector3(i * 2, 0, j * 2),Quaternion.identity);
                             Sapien mob = npc.GetComponent<Sapien>();
+                            mob.type = 0;
+                            mob.level = level;
+                            level.allMobs.Add(mob);
                         }
                         else
                         {
                             GameObject npc = (GameObject)GameObject.Instantiate(flores, new Vector3(i * 2, 0, j * 2),Quaternion.identity);
-                            Flores mob = npc.GetComponent<Flores>();
+                            Sapien mob = npc.GetComponent<Sapien>();
+                            mob.type = 1;
+                            mob.level = level;
+                            level.allMobs.Add(mob);
                         }
                     }
                 }

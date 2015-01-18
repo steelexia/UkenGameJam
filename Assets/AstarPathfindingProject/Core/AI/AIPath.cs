@@ -62,7 +62,6 @@ public class AIPath : Mob {
 	/** Maximum velocity.
 	 * This is the maximum speed in world units per second.
 	 */
-	public float speed = 3;
 	
 	/** Rotation speed.
 	 * Rotation is calculated using Quaternion.SLerp. This variable represents the damping, the higher, the faster it will be able to rotate.

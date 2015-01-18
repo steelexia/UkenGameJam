@@ -22,6 +22,8 @@ public class Mob : Entity {
     public AudioManager audioManager;
     public bool isAlive = true;
     public bool isPlayer = false;
+
+    public Level level;
     
 	// Use this for initialization
      protected virtual void Start () {
@@ -44,6 +46,7 @@ public class Mob : Entity {
 
     public void Attack(string layer)
     {
+        /*
         RaycastHit hit;
         anim.Play("human_attack");
         audioManager.PlayAudio(0);
@@ -51,12 +54,19 @@ public class Mob : Entity {
         if (Physics.Raycast(this.transform.position + new Vector3(0, 0, 0), transform.forward, out hit, 1.5f))
         {
             Mob player;
-            if ((player = hit.collider.gameObject.GetComponent<NPC>()) != null)
+            if ((player = hit.collider.gameObject.GetComponent<Player>()) != null)
             {
                 audioManager.PlayAudio(1);
                 player.Damage(atkDamage);
             }
         }
+        */
+
+
+        anim.Play("human_attack");
+        audioManager.PlayAudio(0);
+        level.attack(this);
+
     }
 
     public void Heal(float hp)
@@ -70,9 +80,9 @@ public class Mob : Entity {
     }
     public void Damage(float damage)
     {
-        if (!isPlayer)
+        //if (!isPlayer)
         {
-            if (this == null || isAlive == false)
+            if (this == null || hp <= 0)
                 return;
 
 
@@ -92,22 +102,32 @@ public class Mob : Entity {
     {
        if(isPlayer !=true )
        {
-           Destroy(gameObject);
-       }
-           /*
+           //Destroy(gameObject);
+       
+           
         isAlive = false;
         	Bounds b = gameObject.collider.bounds;
 			Destroy (gameObject.collider);
             GraphUpdateObject guo = new GraphUpdateObject(b);
 		    AstarPath.active.UpdateGraphs (guo,0.0f);
             AstarPath.active.FlushGraphUpdates();
-            if (isPlayer != true)
-            {
                 anim.Play("human_death");
                 CharacterController cc = GetComponent(typeof(CharacterController)) as CharacterController;
                 cc.enabled = false;
                 this.enabled = false;
-            }
-            * */
+                
+                
+            Sapien sa = gameObject.GetComponent<Sapien>();
+            if (sa != null) Destroy(sa);
+            SimpleSmoothModifier ssm = gameObject.GetComponent<SimpleSmoothModifier>();
+            if (ssm != null) Destroy(ssm);
+            Seeker s = gameObject.GetComponent<Seeker>();
+            if (s != null) Destroy(s);
+            CapsuleCollider cap = gameObject.GetComponent<CapsuleCollider>();
+            if (cap != null) Destroy(cap);
+        }
+        else
+            anim.Play("human_death");
+        
     }
 }

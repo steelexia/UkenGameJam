@@ -30,11 +30,16 @@ public class Player : Mob {
         }
         else if (Input.GetMouseButtonDown(1))
         {
+            if (SpearCount == 0)
+                return;
+
             animation.Play("human_attack"); //TODO
-            GameObject spear = (GameObject)Instantiate(Mob.spearProjectile, gameObject.transform.position + new Vector3(0,2,0), gameObject.transform.rotation);
+            GameObject spear = (GameObject)Instantiate(Mob.spearProjectile, gameObject.transform.position + new Vector3(0,1.5f,0) + gameObject.transform.forward * 0.5f, gameObject.transform.localRotation);
             Projectile spearP = spear.GetComponent<Projectile>();
             spearP.damage = 100;
             spearP.thrower = 0;
+
+            SpearCount--;
         }
 
         if (Input.GetButtonDown("Eat"))
@@ -83,10 +88,11 @@ public class Player : Mob {
             }
         }
 
-        if (!playedBreak)
+        if (!playedBreak && !animation.IsPlaying("human_attack"))
         {
             Attack("Enemy");
             animation.Play("human_attack");
+            level.attack(this);
         }
     }
 
@@ -112,7 +118,7 @@ public class Player : Mob {
             }
             else if (item.type == Item.Type.PICKAXE && PickaxeDurability == 0)
             {
-                PickaxeDurability = 40;
+                PickaxeDurability = 15;
                 Destroy(item.gameObject);
             }
         }

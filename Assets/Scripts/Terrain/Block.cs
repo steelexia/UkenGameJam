@@ -63,7 +63,7 @@ public class Block : MonoBehaviour {
         //GameObject newEffect = (GameObject)Instantiate(effect, transform.position, Quaternion.identity);
         GameObject particle = (GameObject)Instantiate(blockDestroy, transform.position + new Vector3(0,4,0), Quaternion.identity); 
 
-        //if (UnityEngine.Random.Range(0, 1f) < 0.05f)
+        if (UnityEngine.Random.Range(0, 1f) < 0.05f)
         {
             Vector3 randomOffset = new Vector3(UnityEngine.Random.Range(-0.5f, 0.5f), 0, UnityEngine.Random.Range(-0.5f, 0.5f));
             GameObject itemGO = (GameObject)GameObject.Instantiate(Item.allItemModels [Item.Type.MEAT], gameObject.transform.position + randomOffset, Quaternion.Euler(new Vector3(0, UnityEngine.Random.Range(0, 360), 0)));
