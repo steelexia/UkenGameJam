@@ -43,25 +43,14 @@ public class Player : Mob {
                 MeatCount--;
             }
         }
-<<<<<<< HEAD
 
-        //progressBar.value = hp / BaseStats.BASEPLAYERHP;
-=======
-
-
-        //progressBar.value = hp / BaseStats.BASEPLAYERHP;
-
->>>>>>> 7c85da5e29596c34eea1a13759ba76579df3ce39
         if(Input.GetKeyDown(KeyCode.H))
         {
             Heal(50f);
         }
-<<<<<<< HEAD
         //progressBar.value = hp / BaseStats.BASEPLAYERHP;
-=======
         progressBar.value = hp / BaseStats.BASEPLAYERHP;
 
->>>>>>> 7c85da5e29596c34eea1a13759ba76579df3ce39
 	}
 
     void BreakBlock()
