@@ -26,6 +26,7 @@ public class Player : Mob {
         if (Input.GetMouseButtonDown(0))
         {
             BreakBlock();
+            
         }
         else if (Input.GetMouseButtonDown(1))
         {
@@ -42,16 +43,16 @@ public class Player : Mob {
                 MeatCount--;
             }
         }
-<<<<<<< HEAD
+
 
         //progressBar.value = hp / BaseStats.BASEPLAYERHP;
-=======
+
         if(Input.GetKeyDown(KeyCode.H))
         {
             Heal(50f);
         }
         progressBar.value = hp / BaseStats.BASEPLAYERHP;
->>>>>>> c2a6e1b3e76a3843db6405cbaa06f4de8f5828ba
+
 	}
 
     void BreakBlock()
@@ -82,7 +83,11 @@ public class Player : Mob {
         }
 
         if (!playedBreak)
+        {
+
+            Attack("Enemy");
             animation.Play("human_attack");
+        }
     }
 
     void OnTriggerStay(Collider other) {
