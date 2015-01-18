@@ -43,6 +43,14 @@ public class LevelGenerator
                     level.block[i, j] = block.GetComponent<Block>();
                     level.block[i, j].Init(blockType, level, i, j);
                 }
+                else
+                {
+                    if (UnityEngine.Random.Range(0,1f) < 0.01f)
+                    {
+                        // TODO spawn NPC
+                        //GameObject npc = (GameObject)GameObject.Instantiate(
+                    }
+                }
             }
         }
         OnGenerateMap(level,width,height);
