@@ -50,6 +50,7 @@ public class NPC : AIPath
     public GameObject endOfPathEffect;
 
     public Transform player;
+    bool isAttacking = false;
 
     public new void Start()
     {
@@ -209,10 +210,39 @@ public class NPC : AIPath
     }
     void Battle()
     {
-        if(attackCooldown ==currentCooldown)
+        Vector3 direction;
+        direction = transform.position - player.position;
+
+        if (Vector3.SqrMagnitude(direction) > attackDistance)
         {
-            audioManager.PlayAudio(0);
+            State = AIState.Seek;
+            return;
         }
+
+        if(isAttacking == false)
+        {
+            isAttacking = true;
+            StartCoroutine(Attack());
+          
+        }
+    }
+
+    IEnumerator Attack()
+    {
+        RaycastHit hit;
+        anim.Play("human_attack");
+        audioManager.PlayAudio(0);
+        if (Physics.Raycast(this.transform.position + new Vector3(0, 0, 0), transform.forward, out hit, 1.5f))
+        {
+            Player player;
+            if ((player = hit.collider.gameObject.GetComponent<Player>()) != null)
+            {
+                player.Damage(atkDamage);
+            }
+        }
+
+        yield return new WaitForSeconds(attackRate);
+        isAttacking = false;
     }
 
     public static Transform WithinSight2D(Transform transform, float fieldOfViewAngle, float viewDistance, LayerMask objectLayerMask)

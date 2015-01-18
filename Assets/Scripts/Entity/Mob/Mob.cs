@@ -10,6 +10,7 @@ public class Mob : Entity {
     public float hp;
     public float xp;
     public float atkDamage;
+    public float attackRate = 0.8f;
     public float attackCooldown;
     public float currentCooldown;
     public float speed = 10;
@@ -25,7 +26,8 @@ public class Mob : Entity {
 	}
 	
 	// Update is called once per frame
-	public void Update () {
+     protected virtual void Update()
+     {
         currentCooldown += Time.deltaTime;
         currentCooldown = Mathf.Clamp(attackCooldown,0,attackCooldown);
 	}
@@ -34,6 +36,20 @@ public class Mob : Entity {
 		velocity = vel;
 	}
 
+    public void Damage(float damage)
+    {
+        if (this == null)
+            return;
+         hp -= damage;
+
+
+       
+
+        if (hp<= 0)
+        {
+            Die();
+        }
+    }
 
     public virtual void Die()
     {

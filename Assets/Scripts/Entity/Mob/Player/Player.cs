@@ -12,6 +12,7 @@ public class Player : Mob {
     /* number of meat left */
     public int MeatCount;
 
+    public UIProgressBar progressBar;
 	// Use this for initialization
 	new void Start () {
         base.Start();
@@ -27,6 +28,7 @@ public class Player : Mob {
             BreakBlock();
 
         }
+        progressBar.value = hp / BaseStats.BASEPLAYERHP;
 	}
 
     void BreakBlock()
