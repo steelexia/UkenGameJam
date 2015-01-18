@@ -22,7 +22,7 @@ public class Block : MonoBehaviour {
         this.type = type;
         this.alive = false;
     }
-   public void Init(Type type, Level level, int i, int j)
+    public void Init(Type type, Level level, int i, int j)
     {
         this.type = type;
         this.alive = true;
@@ -58,7 +58,19 @@ public class Block : MonoBehaviour {
     public void Destroy()
     {
         level.destroyBlock(i, j);
+
+        //if (UnityEngine.Random.Range(0, 1f) < 0.05f)
+        {
+            Vector3 randomOffset = new Vector3(UnityEngine.Random.Range(-0.5f, 0.5f), 0, UnityEngine.Random.Range(-0.5f, 0.5f));
+            GameObject itemGO = (GameObject)GameObject.Instantiate(Item.allItemModels [Item.Type.MEAT], gameObject.transform.position + randomOffset, Quaternion.Euler(new Vector3(0, UnityEngine.Random.Range(0, 360), 0)));
+            Item item = itemGO.GetComponent<Item>();
+            item.Init(Item.Type.MEAT);
+            item.Drop();
+        }
+
         Destroy(this.gameObject);
+
+        //TODO drop item
     }
     public static void loadResources()
     {

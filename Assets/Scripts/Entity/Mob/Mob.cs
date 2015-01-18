@@ -26,9 +26,14 @@ public class Mob : Entity {
         rigidbody.AddForce(velocity, ForceMode.VelocityChange);
         velocity = Vector3.zero;
 	}
-
   
    	public void SetVelocity(Vector3 vel){
 		velocity = vel;
 	}
+
+
+    public virtual void Die()
+    {
+
+    }
 }
