@@ -30,6 +30,7 @@ public class Player : Mob {
         }
         else if (Input.GetMouseButtonDown(1))
         {
+            animation.Play("human_attack"); //TODO
             GameObject spear = (GameObject)Instantiate(Mob.spearProjectile, gameObject.transform.position + new Vector3(0,2,0), gameObject.transform.rotation);
             Projectile spearP = spear.GetComponent<Projectile>();
             spearP.damage = 100;
@@ -84,7 +85,6 @@ public class Player : Mob {
 
         if (!playedBreak)
         {
-
             Attack("Enemy");
             animation.Play("human_attack");
         }
