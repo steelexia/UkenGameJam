@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Flores : Mob {
+public class Flores : NPC {
 
 	// Use this for initialization
 	new void Start () {
