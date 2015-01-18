@@ -9,8 +9,8 @@ using System.Text;
         
     {
 
-        public const float BASEPLAYERHP = 100;
-        public const float BASEPLAYERATK = 20;
+        public const float BASEPLAYERHP = 400;
+        public const float BASEPLAYERATK = 30;
 
 
         public const float BASEBLOCKHP = 100;

@@ -48,10 +48,10 @@ public class Mob : Entity {
         anim.Play("human_attack");
         audioManager.PlayAudio(0);
 
-        if (Physics.Raycast(this.transform.position + new Vector3(0, 0, 0), transform.forward, out hit, 1.5f, ~LayerMask.NameToLayer(layer)))
+        if (Physics.Raycast(this.transform.position + new Vector3(0, 0, 0), transform.forward, out hit, 1.5f))
         {
             Mob player;
-            if ((player = hit.collider.gameObject.GetComponent<Mob>()) != null)
+            if ((player = hit.collider.gameObject.GetComponent<NPC>()) != null)
             {
                 audioManager.PlayAudio(1);
                 player.Damage(atkDamage);
@@ -70,24 +70,31 @@ public class Mob : Entity {
     }
     public void Damage(float damage)
     {
-       
-        if (this == null || isAlive == false)
-            return;
-
-
-         hp -= damage;
-
-
-       
-
-        if (hp<= 0)
+        if (!isPlayer)
         {
-            Die();
+            if (this == null || isAlive == false)
+                return;
+
+
+            hp -= damage;
+
+
+
+
+            if (hp <= 0)
+            {
+                Die();
+            }
         }
     }
 
     public virtual void Die()
     {
+       if(isPlayer !=true )
+       {
+           Destroy(gameObject);
+       }
+           /*
         isAlive = false;
         	Bounds b = gameObject.collider.bounds;
 			Destroy (gameObject.collider);
@@ -101,5 +108,6 @@ public class Mob : Entity {
                 cc.enabled = false;
                 this.enabled = false;
             }
+            * */
     }
 }
