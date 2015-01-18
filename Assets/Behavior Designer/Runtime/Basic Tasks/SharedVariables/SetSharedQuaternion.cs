@@ -1,4 +1,7 @@
 using UnityEngine;
+using BehaviorDesigner.Runtime;
+using BehaviorDesigner.Runtime.Tasks;
+
 namespace BehaviorDesigner.Runtime.Tasks.Basic.SharedVariables
 {
     [TaskCategory("Basic/SharedVariable")]
@@ -19,8 +22,12 @@ namespace BehaviorDesigner.Runtime.Tasks.Basic.SharedVariables
 
         public override void OnReset()
         {
-            targetValue = Quaternion.identity;
-            targetVariable = Quaternion.identity;
+            if (targetValue != null) {
+                targetValue.Value = Quaternion.identity;
+            }
+            if (targetVariable != null) {
+                targetVariable.Value = Quaternion.identity;
+            }
         }
     }
 }

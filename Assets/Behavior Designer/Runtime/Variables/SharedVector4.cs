@@ -14,6 +14,5 @@ namespace BehaviorDesigner.Runtime
         public override void SetValue(object value) { mValue = (Vector4)value; }
 
         public override string ToString() { return mValue.ToString(); }
-        public static implicit operator SharedVector4(Vector4 value) { var sharedVariable = new SharedVector4(); sharedVariable.SetValue(value); return sharedVariable; }
     }
 }

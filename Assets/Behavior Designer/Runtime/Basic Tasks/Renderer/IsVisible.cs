@@ -1,4 +1,6 @@
 using UnityEngine;
+using BehaviorDesigner.Runtime;
+using BehaviorDesigner.Runtime.Tasks;
 
 namespace BehaviorDesigner.Runtime.Tasks.Basic.UnityRenderer
 {
@@ -6,30 +8,14 @@ namespace BehaviorDesigner.Runtime.Tasks.Basic.UnityRenderer
     [TaskDescription("Returns Success if the Renderer is visible, otherwise Failure.")]
     public class IsVisible : Conditional
     {
-        [Tooltip("The GameObject that the task operates on. If null the task GameObject is used.")]
-        public SharedGameObject targetGameObject;
-
-        // cache the renderer component
-        private  Renderer targetRenderer;
-
-        public override void OnStart()
-        {
-            targetRenderer = GetDefaultGameObject(targetGameObject.Value).GetComponent<Renderer>();
-        }
-
         public override TaskStatus OnUpdate()
         {
-            if (targetRenderer == null) {
+            if (renderer == null) {
                 Debug.LogWarning("Renderer is null");
                 return TaskStatus.Failure;
             }
 
-            return targetRenderer.isVisible ? TaskStatus.Success : TaskStatus.Failure;
-        }
-
-        public override void OnReset()
-        {
-            targetGameObject = null;
+            return renderer.isVisible ? TaskStatus.Success : TaskStatus.Failure;
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System;
+using Pathfinding;
 
 public class LevelGenerator
 {
@@ -28,7 +29,10 @@ public class LevelGenerator
 
 
                     GameObject block = (GameObject)GameObject.Instantiate(Block.allBlockModels[Block.Type.STONE], new Vector3(i * 2, 0, j * 2), Quaternion.Euler(new Vector3(0, 0, 0)));
-
+                    				AstarPath.active.UpdateGraphs (guo);
+                      Bounds b = go.collider.bounds;
+					//Pathfinding.Console.Write ("// Flushing\n");
+					AstarPath.active.FlushGraphUpdates();
                     level.block[i, j] = block.GetComponent<Block>();
                     level.block[i, j].Init(Block.Type.STONE);
                 }
@@ -54,6 +58,8 @@ public class LevelGenerator
                         if (level.block[i, j - 1] == null && level.block[i - 1, j] == null && level.block[ i - 1, j-1] == null)
                         {
                             GameObject go = level.block[i,j].gameObject.transform.FindChild("block_stone_south_west").gameObject;
+                          
+
                             go.SetActive(false);
                         }
                      

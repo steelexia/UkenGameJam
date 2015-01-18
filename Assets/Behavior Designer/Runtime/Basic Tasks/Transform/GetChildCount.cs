@@ -1,4 +1,6 @@
 using UnityEngine;
+using BehaviorDesigner.Runtime;
+using BehaviorDesigner.Runtime.Tasks;
 
 namespace BehaviorDesigner.Runtime.Tasks.Basic.UnityTransform
 {
@@ -6,35 +8,26 @@ namespace BehaviorDesigner.Runtime.Tasks.Basic.UnityTransform
     [TaskDescription("Stores the number of children a Transform has. Returns Success.")]
     public class GetChildCount : Action
     {
-        [Tooltip("The GameObject that the task operates on. If null the task GameObject is used.")]
-        public SharedGameObject targetGameObject;
         [Tooltip("The number of children")]
-        [RequiredField]
         public SharedInt storeValue;
-
-        private Transform targetTransform;
-
-        public override void OnStart()
-        {
-            targetTransform = GetDefaultGameObject(targetGameObject.Value).GetComponent<Transform>();
-        }
 
         public override TaskStatus OnUpdate()
         {
-            if (targetTransform == null) {
+            if (transform == null) {
                 Debug.LogWarning("Transform is null");
                 return TaskStatus.Failure;
             }
 
-            storeValue.Value = targetTransform.childCount;
+            storeValue.Value = transform.childCount;
 
             return TaskStatus.Success;
         }
 
         public override void OnReset()
         {
-            targetGameObject = null;
-            storeValue = 0;
+            if (storeValue != null) {
+                storeValue.Value = 0;
+            }
         }
     }
 }

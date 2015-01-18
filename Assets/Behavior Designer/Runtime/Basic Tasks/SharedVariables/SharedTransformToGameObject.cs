@@ -1,4 +1,6 @@
 using UnityEngine;
+using BehaviorDesigner.Runtime;
+using BehaviorDesigner.Runtime.Tasks;
 
 namespace BehaviorDesigner.Runtime.Tasks.Basic.SharedVariables
 {
@@ -13,10 +15,6 @@ namespace BehaviorDesigner.Runtime.Tasks.Basic.SharedVariables
 
         public override TaskStatus OnUpdate()
         {
-            if (sharedTransform.Value == null) {
-                return TaskStatus.Failure;
-            }
-
             sharedGameObject.Value = sharedTransform.Value.gameObject;
 
             return TaskStatus.Success;
@@ -24,8 +22,12 @@ namespace BehaviorDesigner.Runtime.Tasks.Basic.SharedVariables
 
         public override void OnReset()
         {
-            sharedTransform = null;
-            sharedGameObject = null;
+            if (sharedTransform != null) {
+                sharedTransform.Value = null;
+            }
+            if (sharedGameObject != null) {
+                sharedGameObject.Value = null;
+            }
         }
     }
 }

@@ -1,4 +1,6 @@
 using UnityEngine;
+using BehaviorDesigner.Runtime;
+using BehaviorDesigner.Runtime.Tasks;
 
 namespace BehaviorDesigner.Runtime.Tasks.Basic.UnitySphereCollider
 {
@@ -6,16 +8,14 @@ namespace BehaviorDesigner.Runtime.Tasks.Basic.UnitySphereCollider
     [TaskDescription("Sets the radius of the SphereCollider. Returns Success.")]
     public class SetRadius : Action
     {
-        [Tooltip("The GameObject that the task operates on. If null the task GameObject is used.")]
-        public SharedGameObject targetGameObject;
         [Tooltip("The radius of the SphereCollider")]
         public SharedFloat radius;
 
         private SphereCollider sphereCollider;
 
-        public override void OnStart()
+        public override void OnAwake()
         {
-            sphereCollider = GetDefaultGameObject(targetGameObject.Value).GetComponent<SphereCollider>();
+            sphereCollider = gameObject.GetComponent<SphereCollider>();
         }
 
         public override TaskStatus OnUpdate()
@@ -32,8 +32,9 @@ namespace BehaviorDesigner.Runtime.Tasks.Basic.UnitySphereCollider
 
         public override void OnReset()
         {
-            targetGameObject = null;
-            radius = 0;
+            if (radius != null) {
+                radius.Value = 0;
+            }
         }
     }
 }

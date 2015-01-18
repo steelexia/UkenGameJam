@@ -7,17 +7,17 @@ namespace BehaviorDesigner.Runtime.Tasks
     public class RandomProbability : Conditional
     {
         [Tooltip("The chance that the task will return success")]
-        public SharedFloat successProbability = 0.5f;
+        public float successProbability = 0.5f;
         [Tooltip("Seed the random number generator to make things easier to debug")]
-        public SharedInt seed;
+        public int seed = 0;
         [Tooltip("Do we want to use the seed?")]
-        public SharedBool useSeed;
+        public bool useSeed = false;
 
         public override void OnAwake()
         {
             // If specified, use the seed provided.
-            if (useSeed.Value) {
-                Random.seed = seed.Value;
+            if (useSeed) {
+                Random.seed = seed;
             }
         }
 
@@ -25,7 +25,7 @@ namespace BehaviorDesigner.Runtime.Tasks
         {
             // Return success if random value is less than the success probability. Otherwise return failure.
             float randomValue = Random.value;
-            if (randomValue < successProbability.Value) {
+            if (randomValue < successProbability) {
                 return TaskStatus.Success;
             }
             return TaskStatus.Failure;

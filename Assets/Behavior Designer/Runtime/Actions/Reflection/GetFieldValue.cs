@@ -17,7 +17,6 @@ namespace BehaviorDesigner.Runtime.Tasks
         [Tooltip("The name of the field")]
         public SharedString fieldName;
         [Tooltip("The value of the field")]
-        [RequiredField]
         public SharedVariable fieldValue;
 
         public override TaskStatus OnUpdate()
@@ -32,7 +31,7 @@ namespace BehaviorDesigner.Runtime.Tasks
                 return TaskStatus.Failure;
             }
 
-            var component = targetGameObject.Value.GetComponent(TaskUtility.GetTypeWithinAssembly(componentName.Value));
+            var component = targetGameObject.Value.GetComponent(componentName.Value);
             if (component == null) {
                 Debug.LogWarning("Unable to get the field with component " + componentName.Value);
                 return TaskStatus.Failure;

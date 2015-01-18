@@ -1,4 +1,6 @@
 using UnityEngine;
+using BehaviorDesigner.Runtime;
+using BehaviorDesigner.Runtime.Tasks;
 
 namespace BehaviorDesigner.Runtime.Tasks.Basic.UnityCapsuleCollider
 {
@@ -6,16 +8,14 @@ namespace BehaviorDesigner.Runtime.Tasks.Basic.UnityCapsuleCollider
     [TaskDescription("Sets the direction of the CapsuleCollider. Returns Success.")]
     public class SetDirection : Action
     {
-        [Tooltip("The GameObject that the task operates on. If null the task GameObject is used.")]
-        public SharedGameObject targetGameObject;
         [Tooltip("The direction of the CapsuleCollider")]
         public SharedInt direction;
 
         private CapsuleCollider capsuleCollider;
 
-        public override void OnStart()
+        public override void OnAwake()
         {
-            capsuleCollider = GetDefaultGameObject(targetGameObject.Value).GetComponent<CapsuleCollider>();
+            capsuleCollider = gameObject.GetComponent<CapsuleCollider>();
         }
 
         public override TaskStatus OnUpdate()
@@ -32,8 +32,9 @@ namespace BehaviorDesigner.Runtime.Tasks.Basic.UnityCapsuleCollider
 
         public override void OnReset()
         {
-            targetGameObject = null;
-            direction = 0;
+            if (direction != null) {
+                direction.Value = 0;
+            }
         }
     }
 }

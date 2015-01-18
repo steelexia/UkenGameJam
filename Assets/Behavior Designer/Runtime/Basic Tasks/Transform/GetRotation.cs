@@ -1,4 +1,6 @@
 using UnityEngine;
+using BehaviorDesigner.Runtime;
+using BehaviorDesigner.Runtime.Tasks;
 
 namespace BehaviorDesigner.Runtime.Tasks.Basic.UnityTransform
 {
@@ -6,35 +8,26 @@ namespace BehaviorDesigner.Runtime.Tasks.Basic.UnityTransform
     [TaskDescription("Stores the rotation of the Transform. Returns Success.")]
     public class GetRotation : Action
     {
-        [Tooltip("The GameObject that the task operates on. If null the task GameObject is used.")]
-        public SharedGameObject targetGameObject;
         [Tooltip("The rotation of the Transform")]
-        [RequiredField]
         public SharedQuaternion storeValue;
-
-        private Transform targetTransform;
-
-        public override void OnStart()
-        {
-            targetTransform = GetDefaultGameObject(targetGameObject.Value).GetComponent<Transform>();
-        }
 
         public override TaskStatus OnUpdate()
         {
-            if (targetTransform == null) {
+            if (transform == null) {
                 Debug.LogWarning("Transform is null");
                 return TaskStatus.Failure;
             }
 
-            storeValue.Value = targetTransform.rotation;
+            storeValue.Value = transform.rotation;
 
             return TaskStatus.Success;
         }
 
         public override void OnReset()
         {
-            targetGameObject = null;
-            storeValue = Quaternion.identity;
+            if (storeValue != null) {
+                storeValue.Value = Quaternion.identity;
+            }
         }
     }
 }

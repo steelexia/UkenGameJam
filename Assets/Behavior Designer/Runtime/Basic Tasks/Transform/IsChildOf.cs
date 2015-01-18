@@ -1,4 +1,6 @@
 using UnityEngine;
+using BehaviorDesigner.Runtime;
+using BehaviorDesigner.Runtime.Tasks;
 
 namespace BehaviorDesigner.Runtime.Tasks.Basic.UnityTransform
 {
@@ -6,32 +8,24 @@ namespace BehaviorDesigner.Runtime.Tasks.Basic.UnityTransform
     [TaskDescription("Returns Success if the transform is a child of the specified GameObject.")]
     public class IsChildOf : Conditional
     {
-        [Tooltip("The GameObject that the task operates on. If null the task GameObject is used.")]
-        public SharedGameObject targetGameObject;
         [Tooltip("The interested transform")]
         public SharedTransform transformName;
 
-        private Transform targetTransform;
-
-        public override void OnStart()
-        {
-            targetTransform = GetDefaultGameObject(targetGameObject.Value).GetComponent<Transform>();
-        }
-
         public override TaskStatus OnUpdate()
         {
-            if (targetTransform == null) {
+            if (transform == null) {
                 Debug.LogWarning("Transform is null");
                 return TaskStatus.Failure;
             }
 
-            return targetTransform.IsChildOf(transformName.Value) ? TaskStatus.Success : TaskStatus.Failure;
+            return transform.IsChildOf(transformName.Value) ? TaskStatus.Success : TaskStatus.Failure;
         }
 
         public override void OnReset()
         {
-            targetGameObject = null;
-            transformName = null;
+            if (transformName != null) {
+                transformName.Value = null;
+            }
         }
     }
 }

@@ -31,7 +31,7 @@ namespace BehaviorDesigner.Runtime.Tasks
                 return TaskStatus.Failure;
             }
 
-            var component = targetGameObject.Value.GetComponent(TaskUtility.GetTypeWithinAssembly(componentName.Value));
+            var component = targetGameObject.Value.GetComponent(componentName.Value);
             if (component == null) {
                 Debug.LogWarning("Unable to set the field with component " + componentName.Value);
                 return TaskStatus.Failure;

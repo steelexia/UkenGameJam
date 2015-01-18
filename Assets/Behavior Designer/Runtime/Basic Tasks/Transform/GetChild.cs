@@ -1,4 +1,6 @@
 using UnityEngine;
+using BehaviorDesigner.Runtime;
+using BehaviorDesigner.Runtime.Tasks;
 
 namespace BehaviorDesigner.Runtime.Tasks.Basic.UnityTransform
 {
@@ -6,38 +8,31 @@ namespace BehaviorDesigner.Runtime.Tasks.Basic.UnityTransform
     [TaskDescription("Stores the transform child at the specified index. Returns Success.")]
     public class GetChild : Action
     {
-        [Tooltip("The GameObject that the task operates on. If null the task GameObject is used.")]
-        public SharedGameObject targetGameObject;
         [Tooltip("The index of the child")]
         public SharedInt index;
         [Tooltip("The child of the Transform")]
-        [RequiredField]
         public SharedTransform storeValue;
-
-        private Transform targetTransform;
-
-        public override void OnStart()
-        {
-            targetTransform = GetDefaultGameObject(targetGameObject.Value).GetComponent<Transform>();
-        }
 
         public override TaskStatus OnUpdate()
         {
-            if (targetTransform == null) {
+            if (transform == null) {
                 Debug.LogWarning("Transform is null");
                 return TaskStatus.Failure;
             }
 
-            storeValue.Value = targetTransform.GetChild(index.Value);
+            storeValue.Value = transform.GetChild(index.Value);
 
             return TaskStatus.Success;
         }
 
         public override void OnReset()
         {
-            targetGameObject = null;
-            index = 0;
-            storeValue = null;
+            if (index != null) {
+                index.Value = 0;
+            }
+            if (storeValue != null) {
+                storeValue.Value = null;
+            }
         }
     }
 }
