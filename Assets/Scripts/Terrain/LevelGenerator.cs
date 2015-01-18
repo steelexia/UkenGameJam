@@ -32,8 +32,6 @@ public class LevelGenerator
                 
                 if (blockType == Block.Type.BORDER || perlinNoise(perlinX,perlinY,0.4f) > -0.2f)
                 {
-
-                        
                     GameObject block = (GameObject)GameObject.Instantiate(Block.allBlockModels[blockType], new Vector3(i * 2, 0, j * 2), Quaternion.Euler(new Vector3(0, 0, 0)));
                     
                     Bounds b = block.collider.bounds;
@@ -42,6 +40,14 @@ public class LevelGenerator
                     AstarPath.active.UpdateGraphs(guo);
                     level.block[i, j] = block.GetComponent<Block>();
                     level.block[i, j].Init(blockType, level, i, j);
+                }
+                else
+                {
+                    if (UnityEngine.Random.Range(0,1f) < 0.01f)
+                    {
+                        // TODO spawn NPC
+                        //GameObject npc = (GameObject)GameObject.Instantiate(
+                    }
                 }
             }
         }

@@ -29,9 +29,14 @@ public class Mob : Entity {
         currentCooldown += Time.deltaTime;
         currentCooldown = Mathf.Clamp(attackCooldown,0,attackCooldown);
 	}
-
   
    	public void SetVelocity(Vector3 vel){
 		velocity = vel;
 	}
+
+
+    public virtual void Die()
+    {
+
+    }
 }

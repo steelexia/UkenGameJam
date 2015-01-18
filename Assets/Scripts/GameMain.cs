@@ -10,6 +10,7 @@ public class GameMain : MonoBehaviour {
 	void Start () {
         Tile.loadResources();
         Block.loadResources();
+        Item.loadResources();
         level = new Level(player);
 	}  
 	
