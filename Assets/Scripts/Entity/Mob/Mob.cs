@@ -15,6 +15,7 @@ public class Mob : Entity {
     public float currentCooldown;
     public float speed = 10;
     public float attackDistance = 1.5f;
+    public Animation anim;
     Vector3 velocity = Vector3.zero;
     public AudioManager audioManager;
     
@@ -36,6 +37,33 @@ public class Mob : Entity {
 		velocity = vel;
 	}
 
+
+    public void Attack(string layer)
+    {
+        RaycastHit hit;
+        anim.Play("human_attack");
+        audioManager.PlayAudio(0);
+
+        if (Physics.Raycast(this.transform.position + new Vector3(0, 0, 0), transform.forward, out hit, 1.5f, ~LayerMask.NameToLayer(layer)))
+        {
+            Mob player;
+            if ((player = hit.collider.gameObject.GetComponent<Mob>()) != null)
+            {
+                audioManager.PlayAudio(1);
+                player.Damage(atkDamage);
+            }
+        }
+    }
+
+    public void Heal(float hp)
+    {
+       GameObject newEffect = (GameObject)Instantiate(Resources.Load("heailngRitual"),transform.position, Quaternion.identity);
+
+       
+        this.hp+= hp;
+        this.hp = Mathf.Clamp(hp, 0, BaseStats.BASEPLAYERHP);
+        
+    }
     public void Damage(float damage)
     {
         if (this == null)

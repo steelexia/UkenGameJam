@@ -37,7 +37,7 @@ public class NPC : AIPath
         Seek,
         Battle
     }
-    public Animation anim;
+    
     public AIState State = AIState.Wander;
     /** Minimum velocity for moving */
     public float sleepVelocity = 0.4F;
@@ -196,12 +196,27 @@ public class NPC : AIPath
     }
     void Seek()
     {
-        target.position = player.position;
+        RaycastHit hit;
+        if (Physics.Raycast(this.transform.position + new Vector3(0, 0, 0), transform.forward, out hit, 3.5f))
+        {
+            Block block;
+            if ((block = hit.collider.gameObject.GetComponent<Block>()) != null)
+            {
+                block.Damage(atkDamage);
 
+
+                anim.Play("human_attack");
+
+               
+            }
+        }
+        target.position = player.position;
+            
              Vector3 direction;
             // check each object. All it takes is one object to be able to return success
- 
+                
                 direction = transform.position - player.position;
+               
                 // check to see if the square magnitude is less than what is specified
                 if (Vector3.SqrMagnitude(direction) < attackDistance) 
                  {
@@ -218,28 +233,20 @@ public class NPC : AIPath
             State = AIState.Seek;
             return;
         }
-
+        
         if(isAttacking == false)
         {
+            RotateTowards(direction.normalized);
             isAttacking = true;
-            StartCoroutine(Attack());
+            StartCoroutine(CoAttack());
           
         }
     }
 
-    IEnumerator Attack()
+    IEnumerator CoAttack()
     {
-        RaycastHit hit;
-        anim.Play("human_attack");
-        audioManager.PlayAudio(0);
-        if (Physics.Raycast(this.transform.position + new Vector3(0, 0, 0), transform.forward, out hit, 1.5f))
-        {
-            Player player;
-            if ((player = hit.collider.gameObject.GetComponent<Player>()) != null)
-            {
-                player.Damage(atkDamage);
-            }
-        }
+        Attack("Player");
+       
 
         yield return new WaitForSeconds(attackRate);
         isAttacking = false;
