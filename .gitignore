@@ -74,10 +74,11 @@ UnityGenerated/
 
 # UnityVS
 #Version specific ignore does not work
-/Assets/Toolkits/UnityVS/Editor/UnityVS.VersionSpecific.dll
-/Assets/Toolkits/UnityVS/Editor/UnityVS.VersionSpecific.dll.meta
+/Assets/UnityVS/Editor/UnityVS.VersionSpecific.dll
+/Assets/UnityVS/Editor/UnityVS.VersionSpecific.dll.meta
 /UnityVS.PokemonNXTPhoton.sln.DotSettings
 
 # Standard Assets helpers
 /Assets/Toolkits/Standard Assets
 /Assets/Toolkits/Standard Assets.meta
+
