@@ -7,6 +7,7 @@ public class PlayerController : MonoBehaviour
     private Vector3 startPosition, endPosition;
     public CharacterController controller;
     public CameraController cameraController;
+    public AudioManager audioManager;
 
     // Use this for initialization
     void Start()
@@ -34,8 +35,10 @@ public class PlayerController : MonoBehaviour
             
             Vector3 targetDirection = new Vector3(-horizontalAxis + transformPos2d.x, 0, verticalAxis + transformPos2d.z);
             newRotation = Quaternion.LookRotation(targetDirection - transformPos2d, Vector3.up);
-        
+                
             animation.CrossFade("human_run");
+            if(!audioManager.audiolist[3].isPlaying)
+            audioManager.PlayAudio(3);
         } 
         //no movement, mouse controls rotation
         else
@@ -56,7 +59,10 @@ public class PlayerController : MonoBehaviour
             transformPos2d.y = 0;
 
             if (!animation.isPlaying || animation.IsPlaying("human_run"))
+            {
+                audioManager.audiolist[3].Stop();
                 animation.CrossFade("human_idle");
+            }
         }
 
         transform.rotation = Quaternion.Slerp(transform.rotation, newRotation, Time.deltaTime * 10);

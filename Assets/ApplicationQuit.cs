@@ -1,11 +1,9 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class AudioManager : MonoBehaviour {
+public class ApplicationQuit : MonoBehaviour {
 
 	// Use this for initialization
-    public  AudioSource[] audiolist;
-   
 	void Start () {
 	
 	}
@@ -14,10 +12,8 @@ public class AudioManager : MonoBehaviour {
 	void Update () {
 	
 	}
-
-    public void PlayAudio(int index)
+    public void Quit()
     {
-        audiolist[index].Play();
+        Application.Quit();
     }
-
 }
