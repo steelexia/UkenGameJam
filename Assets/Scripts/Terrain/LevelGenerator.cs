@@ -9,6 +9,9 @@ public class LevelGenerator
 
     public static void generate(Level level, int width, int height)
     {
+        GameObject sapien = (GameObject)Resources.Load("mob_homo_sapien", typeof(GameObject));
+        GameObject flores = (GameObject)Resources.Load("mob_homo_floresiensis", typeof(GameObject));
+
         level.tiles = new Tile[width, height];
         level.block = new Block[width, height];
         for (int i = 0; i < width; i++)
@@ -46,7 +49,9 @@ public class LevelGenerator
                     if (UnityEngine.Random.Range(0,1f) < 0.01f)
                     {
                         // TODO spawn NPC
-                        //GameObject npc = (GameObject)GameObject.Instantiate(
+                        //GameObject npc = (GameObject)GameObject.Instantiate(sapien);
+                        //Sapien mob = npc.GetComponent<Sapien>();
+
                     }
                 }
             }

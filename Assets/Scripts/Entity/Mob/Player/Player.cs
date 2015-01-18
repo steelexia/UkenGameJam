@@ -26,9 +26,24 @@ public class Player : Mob {
         if (Input.GetMouseButtonDown(0))
         {
             BreakBlock();
-
         }
-        progressBar.value = hp / BaseStats.BASEPLAYERHP;
+        else if (Input.GetMouseButtonDown(1))
+        {
+            //TODO throw spear
+        }
+
+        if (Input.GetButtonDown("Eat"))
+        {
+            if (MeatCount > 0 && hp < BaseStats.BASEPLAYERHP)
+            {
+                hp += 30;
+                if (hp > BaseStats.BASEPLAYERHP)
+                    hp = BaseStats.BASEPLAYERHP;
+                MeatCount--;
+            }
+        }
+
+        //progressBar.value = hp / BaseStats.BASEPLAYERHP;
 	}
 
     void BreakBlock()
@@ -42,12 +57,17 @@ public class Player : Mob {
             Block block;
             if((block = hit.collider.gameObject.GetComponent<Block>())!=null)
             {
-                block.Damage(atkDamage);
-
                 if (PickaxeDurability == 0)
+                {
                     animation.Play("human_break_0");
+                    block.Damage(20);
+                }
                 else
+                {
                     animation.Play("human_break_1");
+                    block.Damage(30);
+                    PickaxeDurability--;
+                }
 
                 playedBreak = true;
             }

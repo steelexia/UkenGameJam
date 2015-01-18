@@ -26,7 +26,7 @@ public class PlayerController : MonoBehaviour
 
         Quaternion newRotation;
 
-        float movementSpeed = 3f; //TODO
+        float movementSpeed = 4f; //TODO
 
         if (verticalAxis != 0 || horizontalAxis != 0)
         {
