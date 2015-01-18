@@ -1,10 +1,12 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Sapien : Mob {
+public class Sapien : NPC {
 
 	// Use this for initialization
+
     new void Start () {
+
 	    //TODO
 	}
 	
